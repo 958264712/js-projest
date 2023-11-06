@@ -918,13 +918,13 @@
               </li>
               <li class="btn-xl">
                 <label onclick="changeItem(1)">转一行</label>
-                <label>转数字</label>
-                <label>|+换行</label>
-                <label>←删除</label>
-                <label>转字母</label>
-                <label>音轨V2</label>
+                <label onclick="changeItem(2)">转数字</label>
+                <label onclick="handleItem('enter')">|+换行</label>
+                <label onclick="handleItem('delete')">←删除</label>
+                <label onclick="changeItem(3)">转字母</label>
+                <label onclick="handleItemV2('V2')">音轨V2</label>
                 <label onclick="getSelectText()">全选</label>
-                <label>4/4V1</label>
+                <label onclick="handleItemV(4,'4V1')">4/4V1</label>
               </li>
             </ul>
           </div>
@@ -973,11 +973,11 @@
           <li><i>?</i><label class="wulianyin"> </label></li>
           <li><i>?</i><label class="liulianyin"> </label></li>
           <li><i>?</i><label class="qilianyin"> </label></li>
-          <li><i>?</i><label>2/4V1</label></li>
-          <li><i>?</i><label>3/4V1</label></li>
-          <li><i>?</i><label>4/4V1</label></li>
-          <li><i>?</i><label>3/8V1</label></li>
-          <li><i>?</i><label>6/8V1</label></li>
+          <li><i>?</i><label onclick="handleItemV(2,'4V1')">2/4V1</label></li>
+          <li><i>?</i><label onclick="handleItemV(3,'4V1')">3/4V1</label></li>
+          <li><i>?</i><label onclick="handleItemV(4,'4V1')">4/4V1</label></li>
+          <li><i>?</i><label onclick="handleItemV(3,'8V1')">3/8V1</label></li>
+          <li><i>?</i><label onclick="handleItemV(4,'8V1')">6/8V1</label></li>
           <li><i>?</i><label>并音词</label></li>
         </ul>
       </div>
@@ -1024,15 +1024,20 @@
         </ul>
       </div>
       <div class="lay-five">
-        <textarea spellcheck="false"></textarea>
+        <textarea id="content_five" spellcheck="false"></textarea>
       </div>
     </div>
   </body>
   <script>
     var oContent = document.getElementById("content");
     var ContentValue = document.getElementById("content").value;
-    var str, strcopy, hisArr, start, end,ifAllOver;
+    var ContentFiveValue = document.getElementById("content_five").value;
+    var fContent = document.getElementById("content_five");
+    var str, strcopy, hisArr, start, end, ifAllOver;
     oContent.onmouseleave = function () {
+      str = window.getSelection().toString();
+    };
+    fContent.onmouseleave = function () {
       str = window.getSelection().toString();
     };
     let backText = ContentValue;
@@ -1043,16 +1048,23 @@
       ContentValue = e.target.value;
       backText = e.target.value;
     });
-
-    const handleFun = (type,start = oContent.selectionStart,end = oContent.selectionEnd) => {
+    fContent.addEventListener("input", function (e) {
+      // 在这里编写处理change事件的代码
+      ContentFiveValue = e.target.value;
+    });
+    const handleFun = (
+      type,
+      start = oContent.selectionStart,
+      end = oContent.selectionEnd
+    ) => {
       if (str || ifAllOver) {
         // 处理内容
         hisArr = ContentValue.split("");
         // 获取下标
-        if(ifAllOver){
-          start = 0
+        if (ifAllOver) {
+          start = 0;
         }
-        console.log(ifAllOver,hisArr,type,start,end);
+        console.log(oContent.end);
         let newarr = hisArr.map((item, index) => {
           if (index >= start && index < end) {
             if (item === "," || item === "'") {
@@ -1072,16 +1084,19 @@
         ContentValue = newarr.join("");
         oContent.value = ContentValue;
         num++;
-        ifAllOver = false
+        ifAllOver = false;
         str = "";
       }
     };
 
     //单斜杠
-    function oneSlash(start = oContent.selectionStart,end = oContent.selectionEnd) {
+    function oneSlash(
+      start = oContent.selectionStart,
+      end = oContent.selectionEnd
+    ) {
       hisArr = ContentValue.split("");
-      if(ifAllOver){
-          start = 0
+      if (ifAllOver) {
+        start = 0;
       }
       if (str || ifAllOver) {
         if (!str.includes(",") && !str.includes("'")) {
@@ -1167,16 +1182,20 @@
           num++;
           ContentValue = newarr.join("");
           oContent.value = ContentValue;
+          ifAllOver = false;
           str = "";
         }
       }
     }
 
-    function twoSlash(start = oContent.selectionStart,end = oContent.selectionEnd) {
+    function twoSlash(
+      start = oContent.selectionStart,
+      end = oContent.selectionEnd
+    ) {
       hisArr = ContentValue.split("");
       // 获取下标
-      if(ifAllOver){
-          start = 0
+      if (ifAllOver) {
+        start = 0;
       }
       if (str || ifAllOver) {
         if (!str.includes(",") && !str.includes("'")) {
@@ -1268,6 +1287,7 @@
           ContentValue = newarr.join("");
           oContent.value = ContentValue;
           num++;
+          ifAllOver = false;
           str = "";
         }
       }
@@ -1282,37 +1302,362 @@
         oContent.value = backTextTwo;
         ContentValue = backTextTwo;
       }
+      ifAllOver = false;
       num--;
     };
 
     // 全选
     const getSelectText = () => {
       if (window.getSelection) {
-        let i = ''
-        if (oContent.selectionStart != undefined && oContent.selectionEnd != undefined) {
-          i = oContent.value.substring(0, oContent.selectionEnd)
-          ifAllOver = true
+        let i = "";
+        if (
+          oContent.selectionStart != undefined &&
+          oContent.selectionEnd != undefined
+        ) {
+          i = oContent.value;
+          ifAllOver = true;
         } else {
-          i = ''
+          i = "";
         }
         if (num % 2 === 0) {
           backText = ContentValue;
         } else {
           backTextTwo = ContentValue;
         }
-        ContentValue = i
+        ContentValue = i;
         oContent.value = ContentValue;
         num++;
         str = "";
+        setCss();
       } else {
         return document.selection.createRange().text;
       }
     };
-    
+    const setCss = ()=> {
+      var sr = document.getElementById("content");
+      var len = sr.value.length;
+      setSelectionRange(sr, len, len);
+      //将光标定位到文本最后
+    }
+    const setSelectionRange = (input, selectionStart, selectionEnd) => {
+      if (input.setSelectionRange) {
+        input.focus();
+        input.setSelectionRange(selectionStart, selectionEnd);
+      } else if (input.createTextRange) {
+        var range = input.createTextRange();
+        range.collapse(true);
+        range.moveEnd("character", selectionEnd);
+        range.moveStart("character", selectionStart);
+        range.select();
+      }
+    }
     // 转变函数
+    const changeItem = (
+      type,
+      start = oContent.selectionStart,
+      end = oContent.selectionEnd
+    ) => {
+      if (str || ifAllOver) {
+        // 处理内容
+        hisArr = ContentValue.split("");
+        let newarr;
+        let reg ;
+        // 获取下标
+        if (ifAllOver) {
+          start = 0;
+        }
+        switch (type) {
+          case 1:
+            newarr = hisArr.map((item, index) => {
+              if (index >= start && index < end) {
+                if (item === "\n") {
+                  item = "";
+                }
+              }
+              return item;
+            });
+            break;
+          case 2:
+            reg  = /[0-9IiLl|!！。oOD]/
+            newarr = hisArr.map((item, index) => {
+              if (index >= start && index < end) {
+                if (reg.test(item) !== true) {
+                  item = "";
+                }else{
+                  if(item === 'I' || item ==='i' ||item === 'L' || item ==="l" || item ==="|"|| item ==="!" ||item === "！" ){
+                    return 1
+                  }else if(item === '。' ||item ==='o' || item ==='O' ||item === "D" ){
+                    return 0
+                  }else{
+                    return item
+                  }
+                }
+              }
+              return item;
+            });
+            break;
+          case 3:
+            reg  = /[0-7一二三四五六七零]/
+            newarr = hisArr.map((item, index) => {
+              if (index >= start && index < end) {
+                if (reg.test(item) !== true) {
+                  return item
+                }else{
+                  return changeEng(item)
+                }
+              }
+              return item;
+            });
+            break;
+        }
+        if (num % 2 === 0) {
+          backText = ContentValue;
+        } else {
+          backTextTwo = ContentValue;
+        }
+        num++;
+        ContentValue = newarr.join("");
+        oContent.value = ContentValue;
+        ifAllOver = false;
+        str = "";
+      }
+    };
+    // 转字母
+    const changeEng = (item) =>{
+      switch(item){
+        case '1':
+          return 'C'
+          break;
+        case '2':
+          return 'D'
+          break;
+        case '3':
+          return 'E'
+          break;
+        case '4':
+          return 'F'
+          break;
+        case '5':
+          return 'G'
+          break;
+        case '6':
+          return 'A'
+          break;
+        case '7':
+          return 'B'
+          break;
+        case '0':
+          return 'Z'
+          break;
+        case '一':
+          return 1
+          break;
+        case '二':
+          return 2
+          break;
+        case '三':
+          return 3
+          break;  
+        case '四':
+          return 4
+          break;
+        case '五':
+          return 5
+          break;
+        case '六':
+          return 6
+          break;  
+        case '七':
+          return 7
+          break;
+        case '零':
+          return 0
+          break;
+      }
+    }
 
-    // const changeItem = (type) => {
-
-    // }
+    // 操作函数
+    const handleItem = (type,
+      start = oContent.selectionStart,
+      end = oContent.selectionEnd
+    ) => {
+      if (str || ifAllOver || end) {
+        // 处理内容
+        hisArr = ContentValue.split("");
+        let newarr;
+        // 获取下标
+        if (ifAllOver) {
+          start = 0;
+        }
+        switch (type) {
+          case 'enter':
+            let ifEnter = false
+             newarr = hisArr.map((item, index) => {
+              if (index === end) {
+                ifEnter = true
+              }
+              return item;
+            });
+            if(ifEnter){
+              newarr.splice(end,0,` `)
+              newarr.splice(end + 1,0,`|`)
+              newarr.splice(end + 2,0,`\n`)
+              newarr.splice(end + 3,0,` `)
+              ifEnter = false
+            }
+            break;
+          case 'delete':
+            let ifDelete = false
+             newarr = hisArr.map((item, index) => {
+              if (index === end) {
+                ifDelete = true
+              }
+              return item;
+            });
+            if(ifDelete){
+              newarr.splice(end - 1,1)
+              ifDelete = false
+            }
+            break;
+        }
+        if (num % 2 === 0) {
+          backText = ContentValue;
+        } else {
+          backTextTwo = ContentValue;
+        }
+        num++;
+        ContentValue = newarr.join("");
+        oContent.value = ContentValue;
+        ifAllOver = false;
+        str = "";
+      }
+    }
+    //  V2
+    const handleItemV2 = (type,
+      start = oContent.selectionStart,
+      end = oContent.selectionEnd
+    ) => {
+      if (str || ifAllOver || end) {
+        // 处理内容
+        hisArr = ContentValue.split("");
+        let newarr;
+        // 获取下标
+        if (ifAllOver) {
+          start = 0;
+        }
+        switch (type) {
+          case 'V2':
+            let itemList = []
+            newarr = hisArr.map((item, index) => {
+              if (item === '\n' && hisArr[index + 1] === '\n') {
+                itemList.push(index+1)
+              }
+              return item;
+            });
+            newarr.splice(0,0,'\n')
+            newarr.splice(1,0,'[V: 2]')
+            newarr.splice(2,0,'\n')
+            itemList.forEach((item,index)=>{
+              newarr.splice(item + (index  * 2) + 3,0,'\n')
+              newarr.splice(item + (index * 2) + 4,0,'[V: 2]')
+            })
+            break;
+        }
+        
+        if (num % 2 === 0) {
+          backText = ContentValue;
+        } else {
+          backTextTwo = ContentValue;
+        }
+        num++;
+        ContentValue = newarr.join("");
+        oContent.value = ContentValue;
+        ifAllOver = false;
+        str = "";
+      }
+    }
+  
+    // V1
+    const handleItemV = (num,type,
+      start = oContent.selectionStart,
+      end = oContent.selectionEnd
+    ) => {
+      if (str || ifAllOver) {
+        // 处理内容
+        if(ContentValue.length > 0){
+          hisArr = ContentValue.split("");
+        }else{
+          hisArr = ContentFiveValue.split("")
+        }
+        let newarr;
+        let itemList;
+        let ifV2 = false;
+        // 获取下标
+        if (ifAllOver) {
+          start = 0;
+        }
+        switch (type) {
+          case '4V1':
+            itemList = []
+            newarr = hisArr.map((item, index) => {
+              if (item === '\n' && hisArr[index + 1] === '\n') {
+                itemList.push(index+1)
+              }
+              if(item === '2' && hisArr[index - 1] === ' ' && hisArr[index - 2] === ':' && hisArr[index - 4] === '[' && hisArr[index - 3] === 'V' && hisArr[index + 1] === ']'){
+                ifV2 = true
+              }
+              return item;
+            });
+            let i = ''
+            let j = []
+            for(i>=0;i<num;i++){
+              j.push('""  z')
+            }
+            i = j.join("")
+            newarr.splice(0,0,'\n')
+            newarr.splice(1,0,'[V: 1]')
+            newarr.splice(2,0,'\n')
+            newarr.splice(3,0,i)
+            if(ifV2 !== true){
+              newarr.splice(4,0,'\n')
+            }else{
+              newarr.splice(4,1,'\n')
+            }
+            itemList.forEach((item,index)=>{
+              if(ifV2 === true){
+                newarr.splice(item + (index * 5) + 5,0,'\n')
+                newarr.splice(item + (index * 5) + 6,0,'[V: 1]')
+                newarr.splice(item + (index * 5) + 7,0,'\n')
+                newarr.splice(item + (index * 5) + 8,0,i)
+                newarr.splice(item + (index * 5) + 9,0,'\n')
+              }else{
+                newarr.splice(item + (index * 4) + 5,0,'\n')
+                newarr.splice(item + (index * 4) + 6,0,'[V: 1]')
+                newarr.splice(item + (index * 4) + 7,0,'\n')
+                newarr.splice(item + (index * 4) + 8,0,i)
+              }
+            })
+            break;
+         
+        }
+        
+        if (num % 2 === 0) {
+          backText = ContentValue;
+        } else {
+          backTextTwo = ContentValue;
+        }
+        num++;
+        if(ContentValue.length > 0){
+           ContentValue = newarr.join("");
+          oContent.value = ContentValue;
+        }else{
+          ContentFiveValue = newarr.join("");
+          fContent.value = ContentFiveValue;
+        }
+       
+        ifAllOver = false;
+        str = "";
+      }
+    }
   </script>
 </html>
