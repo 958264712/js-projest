@@ -956,21 +956,85 @@
           <ul>
             <li>
               <i title="这个标签触发提示弹层用的">?</i
-              ><label title="这个标签用于按钮触发" class="erbayinfu"> </label>
+              ><label
+                title="这个标签用于按钮触发"
+                class="erbayinfu"
+                onclick="specialCode(2,' / /')"
+              >
+              </label>
             </li>
-            <li><i>?</i><label class="shiliufenyinfu"> </label></li>
-            <li><i>?</i><label class="qianbahoushiliu"> </label></li>
-            <li><i>?</i><label class="qianshiliuhouba"> </label></li>
-            <li><i>?</i><label class="xiaoqiefen"> </label></li>
-            <li><i>?</i><label class="daqiefen"> </label></li>
-            <li><i>?</i><label class="qianxiaofudian"> </label></li>
-            <li><i>?</i><label class="qiandafudian"> </label></li>
-            <li><i>?</i><label class="houxiaofudian"> </label></li>
-            <li><i>?</i><label class="houdafudian"> </label></li>
-            <li><i>?</i><label class="qianyiyin"> </label></li>
-            <li><i>?</i><label class="erfenyinfu"> </label></li>
-            <li><i>?</i><label class="qyuanyinfu"> </label></li>
-            <li><i>?</i><label class="xiaosanlianyin"> </label></li>
+            <li>
+              <i>?</i
+              ><label
+                class="shiliufenyinfu"
+                onclick="specialCode(4,` // // // //`)"
+              >
+              </label>
+            </li>
+            <li>
+              <i>?</i
+              ><label
+                class="qianbahoushiliu"
+                onclick="specialCode(3,' / // //')"
+              >
+              </label>
+            </li>
+            <li>
+              <i>?</i
+              ><label
+                class="qianshiliuhouba"
+                onclick="specialCode(3,' // // /')"
+              >
+              </label>
+            </li>
+            <li>
+              <i>?</i
+              ><label class="xiaoqiefen" onclick="specialCode(3,' // / //')">
+              </label>
+            </li>
+            <li>
+              <i>?</i
+              ><label class="daqiefen" onclick="specialCode(3,' /     /')">
+              </label>
+            </li>
+            <li>
+              <i>?</i
+              ><label class="qianxiaofudian" onclick="specialCode(2,' /> /')">
+              </label>
+            </li>
+            <li>
+              <i>?</i
+              ><label class="qiandafudian" onclick="specialCode(2,' >  ')">
+              </label>
+            </li>
+            <li>
+              <i>?</i
+              ><label class="houxiaofudian" onclick="specialCode(2,' /< /')">
+              </label>
+            </li>
+            <li>
+              <i>?</i
+              ><label class="houdafudian" onclick="specialCode(2,' <  ')">
+              </label>
+            </li>
+            <li>
+              <i>?</i
+              ><label class="qianyiyin" onclick="specialCode(1,'{ } ')">
+              </label>
+            </li>
+            <li>
+              <i>?</i
+              ><label class="erfenyinfu" onclick="specialCode(0,'二')"> </label>
+            </li>
+            <li>
+              <i>?</i
+              ><label class="qyuanyinfu" onclick="specialCode(0,'四')"> </label>
+            </li>
+            <li>
+              <i>?</i
+              ><label class="xiaosanlianyin" onclick="specialCode(3,`(三`)">
+              </label>
+            </li>
           </ul>
         </div>
         <div class="lay-edit">
@@ -1025,7 +1089,7 @@
                 <label onclick="changeRightItem(2,'~')">二词音</label>
                 <label onclick="changeRightItem(3)">排段落</label>
                 <label onclick="returnBox()">框复位</label>
-                <label onclick="changeRightItem(3,'W')">添加W:</label>
+                <label onclick="changeRightItem(4,'W')">添加W:</label>
               </li>
             </ul>
           </div>
@@ -1046,15 +1110,28 @@
           <li><i>?</i><label class="chanyinhao"> </label></li>
           <li><i>?</i><label class="zhuandiaohao"> </label></li>
           <li><i>?</i><label class="finejihao"> </label></li>
-          <li><i>?</i><label class="dasanlianyin"> </label></li>
-          <li><i>?</i><label class="wulianyin"> </label></li>
-          <li><i>?</i><label class="liulianyin"> </label></li>
-          <li><i>?</i><label class="qilianyin"> </label></li>
+          <li>
+            <i>?</i
+            ><label class="dasanlianyin" onclick="specialCode(3,`(三    `)">
+            </label>
+          </li>
+          <li>
+            <i>?</i
+            ><label class="wulianyin" onclick="specialCode(5,`(五`)"> </label>
+          </li>
+          <li>
+            <i>?</i
+            ><label class="liulianyin" onclick="specialCode(6,`(六`)"> </label>
+          </li>
+          <li>
+            <i>?</i
+            ><label class="qilianyin" onclick="specialCode(7,`(七`)"> </label>
+          </li>
           <li><i>?</i><label onclick="handleItemV(2,'4V1')">2/4V1</label></li>
           <li><i>?</i><label onclick="handleItemV(3,'4V1')">3/4V1</label></li>
           <li><i>?</i><label onclick="handleItemV(4,'4V1')">4/4V1</label></li>
           <li><i>?</i><label onclick="handleItemV(3,'8V1')">3/8V1</label></li>
-          <li><i>?</i><label onclick="handleItemV(4,'8V1')">6/8V1</label></li>
+          <li><i>?</i><label onclick="handleItemV(6,'8V1')">6/8V1</label></li>
           <li><i>?</i><label>并音词</label></li>
         </ul>
       </div>
@@ -1816,7 +1893,7 @@
       }
     };
 
-    // 转一行
+    // 转一行,添加字符，排序
     const changeRightItem = (
       type,
       ite = "",
@@ -1845,7 +1922,7 @@
           case 2:
             let ifEnter = false;
             newarr = hisArr.map((item, index) => {
-              if (index === end) {
+              if (index === end - 1 || index === end) {
                 ifEnter = true;
               }
               return item;
@@ -1868,7 +1945,6 @@
                 item.push(i);
               }
             });
-
             itemList.forEach((it, ind) => {
               let str = it.join("");
               let list = str.split("|");
@@ -1895,6 +1971,22 @@
               return i.replaceAll(",", "\n") + "\n";
             });
             break;
+          case 4:
+            let oldArr = [];
+            newarr = hisArr.map((item, index) => {
+              if (item === "\n" && hisArr[index + 1] !== "\n") {
+                oldArr.push(index + 1);
+              }
+              return item;
+            });
+            newarr.splice(0, 0, "W: ");
+            oldArr.forEach((item, index) => {
+              newarr.splice(item + index * 3 + 1, 0, "W");
+              newarr.splice(item + index * 3 + 2, 0, ":");
+              newarr.splice(item + index * 3 + 3, 0, " ");
+            });
+
+            break;
         }
         ContentRightValue = newarr.join("");
         rContent.value = ContentRightValue;
@@ -1908,6 +2000,142 @@
       rContent.style.height = "296px";
       oContent.style.width = "431.438px";
       rContent.style.width = "333.312px";
+    };
+
+    // 特殊字符
+    const specialCode = (
+      type,
+      Code,
+      start = oContent.selectionStart || fContent.selectionStart,
+      end = oContent.selectionEnd || fContent.selectionEnd
+    ) => {
+      if (str || Code.length) {
+        // 处理内容
+        if (ContentValue.length > 0) {
+          hisArr = ContentValue.split("");
+        } else {
+          hisArr = ContentFiveValue.split("");
+        }
+        let newarr;
+        let listCode;
+        let reg = /[0-7A-GZ]/;
+        let ifjudgu = false;
+        let itemlist = [];
+        let judgulist = [];
+
+        listCode = Code.split(" ");
+        newarr = hisArr.map((item, index) => {
+          if (index >= start && index < end) {
+            itemlist.push(index);
+            judgulist.push(reg.test(item));
+          }
+          return item;
+        });
+        ifjudgu = judgulist.every((item) => item === true);
+        if (!ifjudgu) {
+          alert("您选中的值不属于0-7,A-G,Z中之一!");
+        } else {
+          switch (type) {
+            case 1:
+              if (end - start > 2) {
+                return alert("数字数量不对，点击无效");
+              } else {
+                newarr.splice(itemlist[0], 0, listCode[0]);
+                newarr.splice(itemlist[0] + 2, 0, listCode[1]);
+                newarr.length + 2;
+              }
+              break;
+            case 2:
+              if (type !== end - start) {
+                return alert("数字数量不对，点击无效");
+              } else {
+                for (let i = 0; i < 2; i++) {
+                  newarr.splice(itemlist[i] + 1 + 1 * i, 0, listCode[i + 1]);
+                  newarr.length++;
+                }
+              }
+              break;
+            case 3:
+              if (type !== end - start) {
+                return alert("数字数量不对，点击无效");
+              } else {
+                if (listCode.length === 4) {
+                  for (let i = 0; i < 3; i++) {
+                    newarr.splice(itemlist[i] + 1 + 1 * i, 0, listCode[i + 1]);
+                    newarr.length++;
+                  }
+                } else if (listCode.length === 1) {
+                  newarr.splice(itemlist[0], 0, listCode[0]);
+                  newarr.length++;
+                } else {
+                  if(listCode.length === 5){
+                    newarr.splice(itemlist[0] , 0, listCode[0]);
+                  }else{
+                    newarr.splice(itemlist[0] + 1, 0, listCode[1]);
+                  }
+                  newarr.splice(itemlist[0] + 2, 0, " ");
+                  newarr.splice(itemlist[0] + 4, 0, " ");
+                  newarr.splice(itemlist[0] + 6, 0, listCode[6]);
+                  newarr.length + 4;
+                }
+              }
+
+              break;
+            case 5:
+              if (type !== end - start) {
+                return alert("数字数量不对，点击无效");
+              } else {
+                  newarr.splice(itemlist[0], 0, listCode[0]);
+                  newarr.length++;
+              }
+              break;
+            case 6:
+              if (type !== end - start) {
+                return alert("数字数量不对，点击无效");
+              } else {
+                  newarr.splice(itemlist[0], 0, listCode[0]);
+                  newarr.length++;
+              }
+              break;
+            case 7:
+              if (type !== end - start) {
+                return alert("数字数量不对，点击无效");
+              } else {
+                  newarr.splice(itemlist[0], 0, listCode[0]);
+                  newarr.length++;
+              }
+              break;
+            case 0:
+              let ifEnter = false;
+              newarr = hisArr.map((item, index) => {
+                if (index === end - 1 || index === end) {
+                  ifEnter = true;
+                }
+                return item;
+              });
+              if (ifEnter) {
+                newarr.splice(end, 0, Code[0]);
+                ifEnter = false;
+              }
+          }
+        }
+
+        if (num % 2 === 0) {
+          backText = ContentValue;
+        } else {
+          backTextTwo = ContentValue;
+        }
+        num++;
+        if (ContentValue.length > 0) {
+          ContentValue = newarr.join("");
+          oContent.value = ContentValue;
+        } else {
+          ContentFiveValue = newarr.join("");
+          fContent.value = ContentFiveValue;
+        }
+        ifAllOver = false;
+        str = "";
+      }
     };
   </script>
 </html>
