@@ -1132,7 +1132,7 @@
           <li><i>?</i><label onclick="handleItemV(4,'4V1')">4/4V1</label></li>
           <li><i>?</i><label onclick="handleItemV(3,'8V1')">3/8V1</label></li>
           <li><i>?</i><label onclick="handleItemV(6,'8V1')">6/8V1</label></li>
-          <li><i>?</i><label>并音词</label></li>
+          <li><i>?</i><label onclick="merge()">并音词</label></li>
         </ul>
       </div>
       <div class="lay-four">
@@ -2137,5 +2137,71 @@
         str = "";
       }
     };
+    
+    //并音词
+  const merge = () => {
+    let ContentValue2 = document.getElementById("content").value;   //左边
+    let ContentRightValue2 = document.getElementById("content_right").value;//右边
+    let ContentFiveValue2 = document.getElementById("content_five").value;//最后
+
+    ContentValue2 = ContentValue2.replace(/\n\n/g, '.')
+    ContentRightValue2 = ContentRightValue2.replace(/\n\n/g, '.')
+
+    let contentarr = ContentValue2.split('.') //左边数组
+    let contentRightarr = ContentRightValue2.split('.')//右边数组
+    let newArr = []
+    
+    //去除首个换行
+    contentarr.forEach((item,index) => {
+      console.log(item.indexOf('\n'));
+      if(item.indexOf('\n') === 0){
+        contentarr[index] = contentarr[index].replace(/\n/,'');
+      }
+    });
+    contentRightarr.forEach((item,index) => {
+      console.log(item.indexOf('\n'));
+      if(item.indexOf('\n') === 0){
+        contentRightarr[index] = contentRightarr[index].replace(/\n/,'');
+      }
+    });
+    //合并
+    if (contentarr.length >= contentRightarr.length) {
+      for (let index = 0; index < contentarr.length; index++) {
+        if (contentarr[index] !== "") {
+          newArr.push('')
+          newArr.push(contentarr[index])
+          newArr.push('\n')
+          newArr.push(contentRightarr[index])
+          newArr.push('\n')
+        }
+      }
+    } else {
+      for (let index = 0; index < contentRightarr.length; index++) {
+        if (contentRightarr[index] !== "") {
+          newArr.push('')
+          newArr.push(contentarr[index])
+          newArr.push('\n')
+          newArr.push(contentRightarr[index])
+          newArr.push('\n')
+        }
+      }
+    }
+
+    newArr.forEach((item, index) => {
+      if (item == '') {
+        newArr[index] = "\r\n"
+      }
+    });
+
+    //向最终填词
+    //判断是否原有值
+    if (ContentFiveValue2 == '') {
+      fContent.value = newArr.join('')
+    }else{
+      fContent.value = ContentFiveValue2 +newArr.join('')
+    }
+
+  }
+
   </script>
 </html>
