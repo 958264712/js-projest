@@ -1005,14 +1005,14 @@
               <textarea id="content_right" style="min-width: 60px" spellcheck="false"></textarea>
             </li>
             <li class="btn-gc">
-              <label title="注：转一行的同时将所有空格去掉，如果是英文歌词的情况下，要保留单词之间的空格">转一行</label>
-              <label>竖线|</label>
-              <label>占位*</label>
-              <label>连字-</label>
-              <label>二词音</label>
-              <label>排段落</label>
-              <label>框复位</label>
-              <label>添加W:</label>
+              <label onclick="changeRightItem(1)" title="注：转一行的同时将所有空格去掉，如果是英文歌词的情况下，要保留单词之间的空格">转一行</label>
+              <label onclick="changeRightItem(2,'|')">竖线|</label>
+              <label onclick="changeRightItem(2,'*')">占位*</label>
+              <label onclick="changeRightItem(2,'-')">连字-</label>
+              <label onclick="changeRightItem(2,'~')">二词音</label>
+              <label onclick="changeRightItem(3)">排段落</label>
+              <label onclick="returnBox()">框复位</label>
+              <label onclick="changeRightItem(3)">添加W:</label>
             </li>
           </ul>
         </div>
@@ -1096,11 +1096,16 @@
   var ContentValue = document.getElementById("content").value;
   var ContentFiveValue = document.getElementById("content_five").value;
   var fContent = document.getElementById("content_five");
+  var ContentRightValue = document.getElementById("content_right").value;
+  var rContent = document.getElementById("content_right");
   var str, strcopy, hisArr, start, end, ifAllOver;
   oContent.onmouseleave = function () {
     str = window.getSelection().toString();
   };
   fContent.onmouseleave = function () {
+    str = window.getSelection().toString();
+  };
+  rContent.onmouseleave = function () {
     str = window.getSelection().toString();
   };
   let backText = ContentValue;
@@ -1116,6 +1121,10 @@
   fContent.addEventListener("input", function (e) {
     // 在这里编写处理change事件的代码
     ContentFiveValue = e.target.value;
+  });
+  rContent.addEventListener("input", function (e) {
+    // 在这里编写处理change事件的代码
+    ContentRightValue = e.target.value;
   });
   const handleFun = (
     type,
@@ -1486,6 +1495,7 @@
       str = "";
     }
   };
+  
   // 转字母
   const changeEng = (item) => {
     switch (item) {
@@ -1759,6 +1769,73 @@
       ifAllOver = false;
       str = "";
     }
+  }
+
+  // 转一行
+  const changeRightItem = (type,ite='',start = rContent.selectionStart,
+    end = rContent.selectionEnd
+  ) => {
+    if (str || ite.length > 0) {
+      // 处理内容
+      hisArr = ContentRightValue.split("")
+      let newarr;
+      switch (type) {
+        case 1:
+          newarr = hisArr.map((item, index) => {
+            if (index >= start && index < end) {
+              if (item === "\n") {
+                item = "";
+              }else if (item === " " && hisArr[index-1] >= 0) {
+                item = "";
+              }else{
+                return item
+              }
+            }
+            return item;
+          });
+          break;
+        case 2:
+          let ifEnter = false
+          newarr = hisArr.map((item, index) => {
+            if (index === end) {
+              ifEnter = true
+            }
+            return item;
+          });
+          if (ifEnter) {
+            newarr.splice(end, 0, ite)
+            ifEnter = false
+          }
+          break;
+        case 3:
+          let num = 0
+          let itemList = []
+          let item = []
+          hisArr.map((i, index) => {
+            if (i === '\n' || index === end - 1) {
+              itemList.push(item)
+              item = []
+            }else{
+              item.push(i)
+            }
+          });
+          itemList.forEach((it,ind)=>{
+
+          })
+          break;
+        }
+      ContentRightValue = newarr.join("");
+      rContent.value = ContentRightValue;
+      str = "";
+    }
+ } 
+
+  // 复位
+  const returnBox = () => {
+    oContent.style.height = '296px'
+    rContent.style.height = '296px'
+    oContent.style.width = '431.438px'
+    rContent.style.width = '333.312px'
   }
 </script>
 
