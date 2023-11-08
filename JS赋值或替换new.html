@@ -926,7 +926,11 @@
         <ul>
           <li>
             <i title="这个标签触发提示弹层用的">?</i
-            ><label title="这个标签用于按钮触发" class="maohaofanfuzuo">
+            ><label
+              title="这个标签用于按钮触发"
+              class="maohaofanfuzuo"
+              onclick="maohaofanfuzuo('|:')"
+            >
             </label>
           </li>
           <li><i>?</i><label class="maohaofanfuyou"> </label></li>
@@ -1121,7 +1125,11 @@
         <ul>
           <li>
             <i title="这个标签触发提示弹层用的">?</i
-            ><label title="这个标签用于按钮触发" class="sierpai"></label>
+            ><label
+              title="这个标签用于按钮触发"
+              class="sierpai"
+              onclick="maohaofanfuzuo('[M: 2/4]')"
+            ></label>
           </li>
           <li><i>?</i><label class="sisanpai"> </label></li>
           <li><i>?</i><label class="sisipai"> </label></li>
@@ -1164,7 +1172,7 @@
           <li><label onclick="clickaddspecialCode(1,`C`)">信息C</label></li>
           <li><label onclick="clickaddspecialCode(1,`QMLK`)">QMLK</label></li>
           <li><label onclick="clickaddspecialCode(0,`V`)">V音轨</label></li>
-          <li><label>C</label></li>
+          <li><label onclick="maohaofanfuzuo('C')">C</label></li>
           <li><label>Cmaj7</label></li>
           <li><label>D</label></li>
           <li><label>Dm</label></li>
@@ -2228,8 +2236,8 @@
             } else if (
               item === "\n" &&
               hisArr[index - 1] !== "\n" &&
-              index + 1 !== hisArr.length - 1
-              && hisArr[index + 1] !== Code 
+              index + 1 !== hisArr.length - 1 &&
+              hisArr[index + 1] !== Code
             ) {
               enterlist.push(index);
             }
@@ -2262,15 +2270,23 @@
             newarr.length++;
             break;
           case "QMLK":
-            let itemcode = Code.split("")
+            let itemcode = Code.split("");
             newarr.splice(start, 0, `${itemcode[0]}: `);
             for (let index = 0; index < enterlist.length; index++) {
-              newarr.splice(enterlist[index] + 1 * index + 2, 0, `${itemcode[index + 1]}: `);
+              newarr.splice(
+                enterlist[index] + 1 * index + 2,
+                0,
+                `${itemcode[index + 1]}: `
+              );
               newarr.length++;
             }
             break;
           case "V":
-            newarr.splice(end + 1, 0, "V:1 style=tab clef=standardtab ins=24 vol=100 bracket=2 \n");
+            newarr.splice(
+              end + 1,
+              0,
+              "V:1 style=tab clef=standardtab ins=24 vol=100 bracket=2 \n"
+            );
             newarr.splice(end + 2, 0, "V:2 style=jianpu ins=l vol=100 \n");
             newarr.splice(end + 3, 0, "%V:3 style=jianpu ins=1 vo1=100 \n");
             newarr.splice(end + 4, 0, "% V:4 style=jianpu ins=1 vo1=100 \n");
@@ -2347,6 +2363,60 @@
         fContent.value = newArr.join("");
       } else {
         fContent.value = ContentFiveValue2 + newArr.join("");
+      }
+    };
+    //冒号左
+    const maohaofanfuzuo = (
+      val,
+      start = oContent.selectionStart || fContent.selectionStart,
+      end = oContent.selectionEnd || fContent.selectionEnd
+    ) => {
+      if (str || val.length || ifAllOver) {
+        // 处理内容
+        if (ContentValue.length > 0) {
+          hisArr = ContentValue.split("");
+        } else {
+          hisArr = ContentFiveValue.split("");
+        }
+        let ifEnter = false;
+        let newarr = [];
+        var sr =
+          document.getElementById("content") ||
+          document.getElementById("content_right");
+        setSelectionRange(sr, end, end);
+        if (hisArr.length > 0) {
+          newarr = hisArr.map((item, index) => {
+            if (
+              index === end ||
+              (index + 1 === hisArr.length && hisArr[index] !== val)
+            ) {
+              ifEnter = true;
+            }
+            return item;
+          });
+          if (ifEnter) {
+            newarr.splice(end, 0, val);
+            newarr.length++;
+            ifEnter = false;
+          }
+        } else {
+          newarr.push(val);
+        }
+        if (num % 2 === 0) {
+          backText = ContentValue;
+        } else {
+          backTextTwo = ContentValue;
+        }
+        if (ContentValue.length > 0) {
+          ContentValue = newarr.join("");
+          oContent.value = ContentValue;
+        } else {
+          ContentFiveValue = newarr.join("");
+          fContent.value = ContentFiveValue;
+        }
+        num++;
+        ifAllOver = false;
+        str = "";
       }
     };
   </script>
