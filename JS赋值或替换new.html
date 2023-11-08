@@ -1159,11 +1159,11 @@
       </div>
       <div class="lay-four">
         <ul>
-          <li><label onclick="specialCode(12,`I`)">选调i</label></li>
-          <li><label onclick="specialCode(12,`T`)">标题T</label></li>
-          <li><label onclick="specialCode(12,`C`)">信息C</label></li>
-          <li><label onclick="specialCode(12,`QMLK`)">QMLK</label></li>
-          <li><label onclick="specialCode(12,`V`)">V音轨</label></li>
+          <li><label onclick="clickaddspecialCode(1,`I`)">选调i</label></li>
+          <li><label onclick="clickaddspecialCode(1,`T`)">标题T</label></li>
+          <li><label onclick="clickaddspecialCode(1,`C`)">信息C</label></li>
+          <li><label onclick="clickaddspecialCode(1,`QMLK`)">QMLK</label></li>
+          <li><label onclick="clickaddspecialCode(0,`V`)">V音轨</label></li>
           <li><label>C</label></li>
           <li><label>Cmaj7</label></li>
           <li><label>D</label></li>
@@ -2187,124 +2187,8 @@
                 ifEnter = false;
               }
               break;
-            case 11:
-              // hisArr = ContentFiveValue.split("");
-              // let ifFirstEnter = false;
-              // let enterlist = [];
-              // newarr = hisArr.map((item, index) => {
-              //   if (index === 0 && item === "\n" && hisArr[index + 1] !== "I") {
-              //     ifFirstEnter = true;
-              //   } else if (item === "\n" && hisArr[index - 1] === "\n") {
-              //     enterlist.push(index);
-              //   }
-              //   return item;
-              // });
-              // let newlist = [];
-              // let newlistC = [];
-              // hisArr.map((item, index) => {
-              // if (item === "\n" &&index + 1 !== hisArr.length &&hisArr[index + 1] !== "\n" && hisArr[index +1] !== Code) {
-              //   if (index > enterlist[0] && index < enterlist[1] &&enterlist.length > 1 ) {
-              //       newlist.push(index);
-              //   }
-              //   if (index > enterlist[0] &&enterlist.length === 1) {
-              //      newlist.push(index);
-              //   }
-              //   if(index > enterlist[1] && index < hisArr.length&& enterlist.length > 1 ){
-              //     newlistC.push(index);
-              //   }
-              // }
-              // });
-              //   switch (listCode[0]) {
-              //     case "I":
-              //       if (ifFirstEnter) {
-              //         newarr.splice(1, 0, "I: ");
-              //         newarr.length++;
-              //         ifFirstEnter = false;
-              //       }
-              //       break;
-              //     case "T":
-              //       if (enterlist.length > 0 ) {
-              //         newarr.splice(enterlist[0] + 1, 0, "T: ");
-              //         for (let index = 0; index < newlist.length; index++) {
-              //           newarr.splice(newlist[index] + 2 + 1 * index, 0, "T: ");
-              //           newarr.length++;
-              //         }
-              //         newarr.length++;
-              //       }
-              //       break;
-              //     case "C":
-              //       if (enterlist.length > 0 ) {
-              //         newarr.splice(enterlist[1] + 1, 0, "C: ");
-              //         for (let index = 0; index < newlistC.length; index++) {
-              //           newarr.splice(newlistC[index] + 2 + 1 * index, 0, "C: ");
-              //           newarr.length++;
-              //         }
-              //         newarr.length++;
-              //       }
-              //       break;
-              //     case "V":
-              //       break;
-              // }
-              // break;
-            case 12:
-              hisArr = ContentFiveValue.split("");
-              let ifFirstEnter = false;
-              let enterlist = [];
-              newarr = hisArr.map((item, index) => {
-                if (index === 0 && item === "\n" && hisArr[index + 1] !== "I") {
-                  ifFirstEnter = true;
-                } else if (item === "\n" && hisArr[index - 1] === "\n") {
-                  enterlist.push(index);
-                }
-                return item;
-              });
-                switch (listCode[0]) {
-                  case "I":
-                    if (ifFirstEnter) {
-                      newarr.splice(1, 0, "I: \n");
-                      newarr.length++;
-                      ifFirstEnter = false;
-                    }
-                    break;
-                  case "T":
-                    if (enterlist.length > 0 ) {
-                      newarr.splice(enterlist[0] + 1, 0, "T: \n");
-                      newarr.splice(enterlist[0] + 2, 0, "T: \n");
-                      newarr.length+2;
-                    }
-                    break;
-                  case "C":
-                    if (enterlist.length > 1 ) {
-                      newarr.splice(enterlist[1] + 1, 0, "C: \n");
-                      newarr.splice(enterlist[1] + 2, 0, "C: \n");
-                      newarr.splice(enterlist[1] + 3, 0, "C: \n");
-                      newarr.splice(enterlist[1] + 4, 0, "C: \n");
-                      newarr.length+4;
-                    }
-                    break;
-                  case 'QMLK':
-                    if (enterlist.length > 2 ) {
-                    newarr.splice(enterlist[2] + 1, 0, "Q: \n");
-                    newarr.splice(enterlist[2] + 2, 0, "M: \n");
-                    newarr.splice(enterlist[2] + 3, 0, "L: \n");
-                    newarr.splice(enterlist[2] + 4, 0, "K: \n");
-                    newarr.length+4;
-                  }
-                    break;
-                  case "V":
-                    if (enterlist.length > 3 ) {
-                      newarr.splice(enterlist[3] + 1, 0, "V:1 \n");
-                      newarr.splice(enterlist[3] + 2, 0, "V:2 \n");
-                      newarr.splice(enterlist[3] + 3, 0, "V:3 \n");
-                      newarr.splice(enterlist[3] + 4, 0, "V:4 \n");
-                      newarr.length+4;
-                    }
-                    break;
-                }
-              break;
           }
         }
-
         if (num % 2 === 0) {
           backText = ContentValue;
         } else {
@@ -2323,6 +2207,87 @@
       }
     };
 
+    // 点击添加
+    const clickaddspecialCode = (
+      type,
+      Code,
+      start = fContent.selectionStart,
+      end = fContent.selectionEnd
+    ) => {
+      if (str || Code.length) {
+        // 处理内容
+        hisArr = ContentFiveValue.split("");
+        let newarr;
+        let ifFirstEnter = false;
+        let enterlist = [];
+
+        newarr = hisArr.map((item, index) => {
+          if (index >= start && index < end) {
+            if (hisArr[index - 1] === "\n" && item !== "I") {
+              ifFirstEnter = true;
+            } else if (
+              item === "\n" &&
+              hisArr[index - 1] !== "\n" &&
+              index + 1 !== hisArr.length - 1
+              && hisArr[index + 1] !== Code 
+            ) {
+              enterlist.push(index);
+            }
+          }
+          return item;
+        });
+        switch (Code) {
+          case "I":
+            if (ifFirstEnter) {
+              newarr.splice(start, 0, "I: ");
+              newarr.length++;
+            } else {
+              alert("首行需为空行,并且不能在同一位置重复使用!");
+            }
+            break;
+          case "T":
+            newarr.splice(start, 0, "T: ");
+            for (let index = 0; index < enterlist.length; index++) {
+              newarr.splice(enterlist[index] + 2 + 1 * index, 0, "T: ");
+              newarr.length++;
+            }
+            newarr.length++;
+            break;
+          case "C":
+            newarr.splice(start, 0, "C: ");
+            for (let index = 0; index < enterlist.length; index++) {
+              newarr.splice(enterlist[index] + 2 + 1 * index, 0, "C: ");
+              newarr.length++;
+            }
+            newarr.length++;
+            break;
+          case "QMLK":
+            let itemcode = Code.split("")
+            newarr.splice(start, 0, `${itemcode[0]}: `);
+            for (let index = 0; index < enterlist.length; index++) {
+              newarr.splice(enterlist[index] + 1 * index + 2, 0, `${itemcode[index + 1]}: `);
+              newarr.length++;
+            }
+            break;
+          case "V":
+            newarr.splice(end + 1, 0, "V:1 style=tab clef=standardtab ins=24 vol=100 bracket=2 \n");
+            newarr.splice(end + 2, 0, "V:2 style=jianpu ins=l vol=100 \n");
+            newarr.splice(end + 3, 0, "%V:3 style=jianpu ins=1 vo1=100 \n");
+            newarr.splice(end + 4, 0, "% V:4 style=jianpu ins=1 vo1=100 \n");
+            newarr.length + 4;
+            break;
+        }
+        if (num % 2 === 0) {
+          backText = ContentValue;
+        } else {
+          backTextTwo = ContentValue;
+        }
+        num++;
+        ContentFiveValue = newarr.join("");
+        fContent.value = ContentFiveValue;
+        str = "";
+      }
+    };
     //并音词
     const merge = () => {
       let ContentValue2 = document.getElementById("content").value; //左边
