@@ -459,7 +459,8 @@
         height: 296px;
         margin: 0 auto;
         line-height: 18px;
-        word-spacing: 10px;
+        letter-spacing: 2px;
+        word-spacing: 3px;
         overflow: auto;
       }
 
@@ -929,7 +930,7 @@
             ><label
               title="这个标签用于按钮触发"
               class="maohaofanfuzuo"
-              onclick="maohaofanfuzuo('|:')"
+              onclick="maohaofanfuzuo(' |:')"
             >
             </label>
           </li>
@@ -944,11 +945,13 @@
           <li><i>?</i><label class="dchao"> </label></li>
           <li>
             <i>?</i
-            ><label class="gaoyindian" onclick="specialCode(0,`'`)"> </label>
+            ><label class="gaoyindian" onclick="specialCode(0,`'`,true)">
+            </label>
           </li>
           <li>
             <i>?</i
-            ><label class="diyindian" onclick="specialCode(0,`,`)"> </label>
+            ><label class="diyindian" onclick="specialCode(0,`,`,true)">
+            </label>
           </li>
           <li>
             <i>?</i
@@ -1083,13 +1086,13 @@
                 ></textarea>
               </li>
               <li class="btn-xl">
+                <label onclick="getSelectText()">全选</label>
                 <label onclick="changeItem(1)">转一行</label>
                 <label onclick="changeItem(2)">转数字</label>
                 <label onclick="handleItem('enter')">|+换行</label>
                 <label onclick="handleItem('delete')">←删除</label>
                 <label onclick="changeItem(3)">转字母</label>
                 <label onclick="handleItemV2('V2')">音轨V2</label>
-                <label onclick="getSelectText()">全选</label>
                 <label onclick="handleItemV(4,'4V1')">4/4V1</label>
               </li>
             </ul>
@@ -1704,7 +1707,7 @@
           case "enter":
             let ifEnter = false;
             newarr = hisArr.map((item, index) => {
-              if (index === end) {
+              if (index === end || index + 1 === end) {
                 ifEnter = true;
               }
               return item;
@@ -1713,7 +1716,6 @@
               newarr.splice(end, 0, ` `);
               newarr.splice(end + 1, 0, `|`);
               newarr.splice(end + 2, 0, `\n`);
-              newarr.splice(end + 3, 0, ` `);
               ifEnter = false;
             }
             break;
@@ -1727,9 +1729,14 @@
               }
               return item;
             });
-            if (ifDelete) {
-              newarr.splice(end - 1, 1);
+            if (str.length) {
+              newarr.splice(start, end - start);
               ifDelete = false;
+            } else {
+              if (ifDelete) {
+                newarr.splice(end - 1, 1);
+                ifDelete = false;
+              }
             }
             break;
         }
@@ -1846,13 +1853,15 @@
         let j = [];
         if (type === "4V1") {
           for (i >= 0; i < num; i++) {
-            j.push('""  z');
+            j.push('""  z ');
           }
+          j.push("|");
         }
         if (type === "8V1") {
           for (i >= 0; i < num / 3; i++) {
-            j.push('""  z*3/2');
+            j.push('""  z*3/2 ');
           }
+          j.push("|");
         }
         i = j.join("");
         if (!ifV1) {
@@ -2046,6 +2055,7 @@
     const specialCode = (
       type,
       Code,
+      ifTrue = false,
       start = oContent.selectionStart || fContent.selectionStart,
       end = oContent.selectionEnd || fContent.selectionEnd
     ) => {
@@ -2058,16 +2068,19 @@
         }
         let newarr;
         let listCode;
-        let reg = /[0-7A-GZ]/;
+        let reg = /[0-7A-GZ/<>]/;
         let ifjudgu = false;
         let itemlist = [];
         let judgulist = [];
-
+        let num1 = 0;
         listCode = Code.split(" ");
         newarr = hisArr.map((item, index) => {
           if (index >= start && index < end) {
             itemlist.push(index);
             judgulist.push(reg.test(item));
+            if (item === "/" ||item===">"||item==="<") {
+              num1++;
+            }
           }
           return item;
         });
@@ -2080,13 +2093,34 @@
               if (end - start > 2) {
                 return alert("数字数量不对，点击无效");
               } else {
-                newarr.splice(itemlist[0], 0, listCode[0]);
-                newarr.splice(itemlist[0] + 2, 0, listCode[1]);
-                newarr.length + 2;
+                if (str.length) {
+                  newarr.splice(itemlist[0], 0, listCode[0]);
+                  newarr.splice(itemlist[0] + 2, 0, listCode[1]);
+                  newarr.length + 2;
+                } else {
+                  newarr.splice(end, 0, listCode[0]);
+                  newarr.splice(end + 2, 0, listCode[1]);
+                  newarr.length + 2;
+                }
               }
               break;
             case 2:
-              if (type !== end - start) {
+              if (num1 > 0) {
+                itemlist = []
+                judgulist = []
+                newarr = hisArr.map((item, index) => {
+                  if (index >= start && index < end) {
+                    if (item === "/"||item===">"||item==="<") {
+                      return '';
+                    }else{
+                      itemlist.push(index);
+                      judgulist.push(reg.test(item));
+                    }
+                  }
+                  return item;
+                });
+              }
+              if (type + num1 !== end - start) {
                 return alert("数字数量不对，点击无效");
               } else {
                 for (let i = 0; i < 2; i++) {
@@ -2096,7 +2130,22 @@
               }
               break;
             case 3:
-              if (type !== end - start) {
+              if (num1 > 0) {
+                itemlist = []
+                judgulist = []
+                newarr = hisArr.map((item, index) => {
+                  if (index >= start && index < end) {
+                    if (item === "/"||item===">"||item==="<") {
+                      return '';
+                    }else{
+                      itemlist.push(index);
+                      judgulist.push(reg.test(item));
+                    }
+                  }
+                  return item;
+                });
+              }
+              if (type + num1 !== end - start) {
                 return alert("数字数量不对，点击无效");
               } else {
                 if (listCode.length === 4) {
@@ -2119,10 +2168,34 @@
                   newarr.length + 4;
                 }
               }
-
+              break;
+            case 4:
+              if (num1 > 0) {
+                itemlist = []
+                judgulist = []
+                newarr = hisArr.map((item, index) => {
+                  if (index >= start && index < end) {
+                    if (item === "/"||item===">"||item==="<") {
+                      return '';
+                    }else{
+                      itemlist.push(index);
+                      judgulist.push(reg.test(item));
+                    }
+                  }
+                  return item;
+                });
+              }
+              if (type + num1 !== end - start) {
+                return alert("数字数量不对，点击无效");
+              } else {
+                for (let i = 0; i < 4; i++) {
+                  newarr.splice(itemlist[i] + 1 + 1 * i, 0, listCode[1]);
+                  newarr.length++;
+                }
+              }
               break;
             case 5:
-              if (type !== end - start) {
+              if (type + num1 !== end - start) {
                 return alert("数字数量不对，点击无效");
               } else {
                 newarr.splice(itemlist[0], 0, listCode[0]);
@@ -2130,7 +2203,7 @@
               }
               break;
             case 6:
-              if (type !== end - start) {
+              if (type + num1 !== end - start) {
                 return alert("数字数量不对，点击无效");
               } else {
                 newarr.splice(itemlist[0], 0, listCode[0]);
@@ -2138,7 +2211,7 @@
               }
               break;
             case 7:
-              if (type !== end - start) {
+              if (type + num1 !== end - start) {
                 return alert("数字数量不对，点击无效");
               } else {
                 newarr.splice(itemlist[0], 0, listCode[0]);
@@ -2180,10 +2253,12 @@
               break;
             case 0:
               let ifEnter = false;
+              num1++;
+
               var sr =
                 document.getElementById("content") ||
                 document.getElementById("content_five");
-              setSelectionRange(sr, end, end);
+              setSelectionRange(sr, end + num1, end + num1);
               newarr = hisArr.map((item, index) => {
                 if (index === end - 1 || index === end) {
                   ifEnter = true;
@@ -2191,9 +2266,28 @@
                 return item;
               });
               if (ifEnter) {
-                newarr.splice(end, 0, Code[0]);
-                ifEnter = false;
+                if (ifTrue) {
+                  console.log(newarr[end - 1]);
+                  if (
+                    (newarr[end - 1] === "," || newarr[end - 1] === "'") &&
+                    newarr[end - 1] !== Code[0]
+                  ) {
+                    switch (Code[0]) {
+                      case ",":
+                        newarr.splice(end, 0, "'");
+                        break;
+                      case "'":
+                        newarr.splice(end, 0, ",");
+                        break;
+                    }
+                  } else {
+                    newarr.splice(end, 0, Code[0]);
+                  }
+                } else {
+                  newarr.splice(end, 0, Code[0]);
+                }
               }
+              ifEnter = false;
               break;
           }
         }
@@ -2211,7 +2305,9 @@
           fContent.value = ContentFiveValue;
         }
         ifAllOver = false;
+        ifTrue = false;
         str = "";
+        num1 = 0;
       }
     };
 
@@ -2246,12 +2342,8 @@
         });
         switch (Code) {
           case "I":
-            if (ifFirstEnter) {
-              newarr.splice(start, 0, "I: ");
-              newarr.length++;
-            } else {
-              alert("首行需为空行,并且不能在同一位置重复使用!");
-            }
+            newarr.splice(start, 0, "\nI: ");
+            newarr.length++;
             break;
           case "T":
             newarr.splice(start, 0, "T: ");
@@ -2271,14 +2363,25 @@
             break;
           case "QMLK":
             let itemcode = Code.split("");
-            newarr.splice(start, 0, `${itemcode[0]}: `);
-            for (let index = 0; index < enterlist.length; index++) {
-              newarr.splice(
-                enterlist[index] + 1 * index + 2,
-                0,
-                `${itemcode[index + 1]}: `
-              );
-              newarr.length++;
+            if (str.length) {
+              newarr.splice(start, 0, `${itemcode[0]}: `);
+              for (let index = 0; index < itemcode.length; index++) {
+                newarr.splice(
+                  enterlist[index] + 1 * index + 2,
+                  0,
+                  `${itemcode[index + 1]}: `
+                );
+                newarr.length++;
+              }
+            } else {
+              for (let index = itemcode.length; index > 0; index--) {
+                newarr.splice(
+                  enterlist[index] + 1 * index + 1,
+                  0,
+                  `${itemcode[index - 1]}: \n`
+                );
+                newarr.length++;
+              }
             }
             break;
           case "V":
@@ -2288,7 +2391,7 @@
               "V:1 style=tab clef=standardtab ins=24 vol=100 bracket=2 \n"
             );
             newarr.splice(end + 2, 0, "V:2 style=jianpu ins=l vol=100 \n");
-            newarr.splice(end + 3, 0, "%V:3 style=jianpu ins=1 vo1=100 \n");
+            newarr.splice(end + 3, 0, "% V:3 style=jianpu ins=1 vo1=100 \n");
             newarr.splice(end + 4, 0, "% V:4 style=jianpu ins=1 vo1=100 \n");
             newarr.length + 4;
             break;
@@ -2380,10 +2483,11 @@
         }
         let ifEnter = false;
         let newarr = [];
+        let num1 = val.length;
         var sr =
           document.getElementById("content") ||
           document.getElementById("content_right");
-        setSelectionRange(sr, end, end);
+        setSelectionRange(sr, end + num1, end + num1);
         if (hisArr.length > 0) {
           newarr = hisArr.map((item, index) => {
             if (
@@ -2394,10 +2498,14 @@
             }
             return item;
           });
-          if (ifEnter) {
-            newarr.splice(end, 0, val);
-            newarr.length++;
-            ifEnter = false;
+          if (str.length) {
+            newarr.splice(start, end - start, val);
+          } else {
+            if (ifEnter) {
+              newarr.splice(end, 0, val);
+              newarr.length++;
+              ifEnter = false;
+            }
           }
         } else {
           newarr.push(val);
@@ -2415,6 +2523,7 @@
           fContent.value = ContentFiveValue;
         }
         num++;
+        num1 = 0;
         ifAllOver = false;
         str = "";
       }
