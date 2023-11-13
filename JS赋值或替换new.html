@@ -438,7 +438,7 @@
       }
 
       .lay-l {
-        width: 58%;
+        width: 100%;
         height: 304px;
         overflow: hidden;
       }
@@ -448,20 +448,22 @@
       }
 
       .text-xl {
-        flex: 1;
         width: auto;
         height: auto;
       }
 
       .text-xl textarea {
         display: block;
-        width: 97%;
+        width: 386px;
+        max-width: 712px;
         height: 296px;
-        margin: 0 auto;
+        margin: 0 5px;
         line-height: 18px;
         letter-spacing: 2px;
         word-spacing: 3px;
         overflow: auto;
+        padding: 0;
+        box-sizing: border-box;
       }
 
       .btn-xl {
@@ -488,18 +490,20 @@
       }
 
       .text-gc {
-        flex: 1;
         width: auto;
         height: auto;
       }
 
       .text-gc textarea {
         display: block;
-        width: 96%;
+        width: 386px;
+        max-width: 712px;
         height: 296px;
-        margin: 0 auto;
+        margin: 0 5px;
         line-height: 18px;
         overflow: auto;
+        padding: 0;
+        box-sizing: border-box;
       }
 
       .btn-gc {
@@ -988,7 +992,7 @@
               ><label
                 title="这个标签用于按钮触发"
                 class="erbayinfu"
-                onclick="specialCode(2,' / /')"
+                onclick="specialCode(2,' / /',4)"
               >
               </label>
             </li>
@@ -996,7 +1000,7 @@
               <i>?</i
               ><label
                 class="shiliufenyinfu"
-                onclick="specialCode(4,` // // // //`)"
+                onclick="specialCode(4,` // // // //`,8)"
               >
               </label>
             </li>
@@ -1004,7 +1008,7 @@
               <i>?</i
               ><label
                 class="qianbahoushiliu"
-                onclick="specialCode(3,' / // //')"
+                onclick="specialCode(3,' / // //',6)"
               >
               </label>
             </li>
@@ -1012,43 +1016,43 @@
               <i>?</i
               ><label
                 class="qianshiliuhouba"
-                onclick="specialCode(3,' // // /')"
+                onclick="specialCode(3,' // // /',6)"
               >
               </label>
             </li>
             <li>
               <i>?</i
-              ><label class="xiaoqiefen" onclick="specialCode(3,' // / //')">
+              ><label class="xiaoqiefen" onclick="specialCode(3,' // / //',6)">
               </label>
             </li>
             <li>
               <i>?</i
-              ><label class="daqiefen" onclick="specialCode(3,' /     /')">
+              ><label class="daqiefen" onclick="specialCode(3,' /     /',5)">
               </label>
             </li>
             <li>
               <i>?</i
-              ><label class="qianxiaofudian" onclick="specialCode(2,' /> /')">
+              ><label class="qianxiaofudian" onclick="specialCode(2,' /> /',4)">
               </label>
             </li>
             <li>
               <i>?</i
-              ><label class="qiandafudian" onclick="specialCode(2,' >  ')">
+              ><label class="qiandafudian" onclick="specialCode(2,' >  ',4)">
               </label>
             </li>
             <li>
               <i>?</i
-              ><label class="houxiaofudian" onclick="specialCode(2,' /< /')">
+              ><label class="houxiaofudian" onclick="specialCode(2,' /< /',4)">
               </label>
             </li>
             <li>
               <i>?</i
-              ><label class="houdafudian" onclick="specialCode(2,' <  ')">
+              ><label class="houdafudian" onclick="specialCode(2,' <  ',4)">
               </label>
             </li>
             <li>
               <i>?</i
-              ><label class="qianyiyin" onclick="specialCode(1,'{ } ')">
+              ><label class="qianyiyin" onclick="specialCode(1,'{//} ')">
               </label>
             </li>
             <li>
@@ -1067,7 +1071,7 @@
           </ul>
         </div>
         <div class="lay-edit">
-          <div class="lay-l">
+          <div class="lay-l" id="lay-l">
             <ul>
               <li class="btn-xl">
                 <label onclick="handleFun(`'`)">引号'</label>
@@ -1081,7 +1085,7 @@
               <li class="text-xl">
                 <textarea
                   id="content"
-                  style="min-width: 60px"
+                  style="min-width: 60px; resize: horizontal"
                   spellcheck="false"
                 ></textarea>
               </li>
@@ -1095,14 +1099,10 @@
                 <label onclick="handleItemV2('V2')">音轨V2</label>
                 <label onclick="handleItemV(4,'4V1')">4/4V1</label>
               </li>
-            </ul>
-          </div>
-          <div class="lay-m">
-            <ul>
               <li class="text-gc">
                 <textarea
                   id="content_right"
-                  style="min-width: 60px"
+                  style="min-width: 60px; resize: horizontal"
                   spellcheck="false"
                 ></textarea>
               </li>
@@ -1122,6 +1122,11 @@
               </li>
             </ul>
           </div>
+          <!-- <div class="lay-m" id="lay-m">
+            <ul>
+             
+            </ul>
+          </div> -->
         </div>
       </div>
       <div class="lay-thr">
@@ -1223,6 +1228,10 @@
     var ContentRightValue = document.getElementById("content_right").value;
     var rContent = document.getElementById("content_right");
     var str, strcopy, hisArr, start, end, ifAllOver;
+    const MutationObserver =
+      window.MutationObserver ||
+      window.WebKitMutationObserver ||
+      window.MozMutationObserver;
     oContent.onmouseleave = function () {
       str = window.getSelection().toString();
     };
@@ -1236,6 +1245,8 @@
     let backTextTwo = "";
     let oldItemV = "";
     let IfItemV = false;
+    let IfFiveContent = false;
+    let IfOContent = false;
     let num = 0;
     oContent.addEventListener("input", function (e) {
       // 在这里编写处理change事件的代码
@@ -1249,6 +1260,16 @@
     rContent.addEventListener("input", function (e) {
       // 在这里编写处理change事件的代码
       ContentRightValue = e.target.value;
+    });
+    oContent.addEventListener("click", function (e) {
+      IfFiveContent = false;
+      IfOContent = true;
+      ContentValue = e.target.value;
+    });
+    fContent.addEventListener("click", function (e) {
+      IfFiveContent = true;
+      IfOContent = false;
+      ContentFiveValue = e.target.value;
     });
     const handleFun = (
       type,
@@ -1716,6 +1737,7 @@
               newarr.splice(end, 0, ` `);
               newarr.splice(end + 1, 0, `|`);
               newarr.splice(end + 2, 0, `\n`);
+              newarr.splice(end + 3, 0, `\n`);
               ifEnter = false;
             }
             break;
@@ -1746,6 +1768,15 @@
           backTextTwo = ContentValue;
         }
         num++;
+        newarr.map((item, index) => {
+          if (
+            newarr[newarr.length - 1] === "\n" &&
+            index === newarr.length - 1 &&
+            item === "\n"
+          ) {
+            newarr.pop();
+          }
+        });
         ContentValue = newarr.join("");
         oContent.value = ContentValue;
         ifAllOver = false;
@@ -1807,7 +1838,7 @@
     ) => {
       if (str || ifAllOver) {
         // 处理内容
-        if (ContentValue.length > 0) {
+        if (IfOContent) {
           hisArr = ContentValue.split("");
         } else {
           hisArr = ContentFiveValue.split("");
@@ -1853,13 +1884,13 @@
         let j = [];
         if (type === "4V1") {
           for (i >= 0; i < num; i++) {
-            j.push('""  z ');
+            j.push('"" z ');
           }
           j.push("|");
         }
         if (type === "8V1") {
           for (i >= 0; i < num / 3; i++) {
-            j.push('""  z*3/2 ');
+            j.push('"" z*3/2 ');
           }
           j.push("|");
         }
@@ -1886,6 +1917,17 @@
               newarr.splice(item + index * 4 + 6, 0, "[V: 1]");
               newarr.splice(item + index * 4 + 7, 0, "\n");
               newarr.splice(item + index * 4 + 8, 0, i);
+            }
+          });
+          newarr = newarr.map((item, index) => {
+            if (
+              item === "\n" &&
+              newarr[index + 1] === "\n" &&
+              newarr[index - 1] === "\n"
+            ) {
+              return "";
+            } else {
+              return item;
             }
           });
         } else {
@@ -1924,7 +1966,7 @@
           }
         }
         num++;
-        if (ContentValue.length > 0) {
+        if (IfOContent) {
           ContentValue = newarr.join("");
           oContent.value = ContentValue;
         } else {
@@ -1947,6 +1989,7 @@
         // 处理内容
         hisArr = ContentRightValue.split("");
         let newarr;
+        let num1 = 0;
         switch (type) {
           case 1:
             newarr = hisArr.map((item, index) => {
@@ -1965,7 +2008,7 @@
           case 2:
             let ifEnter = false;
             var sr = document.getElementById("content_right");
-            setSelectionRange(sr, end, end);
+            num1++;
             newarr = hisArr.map((item, index) => {
               if (
                 index === end ||
@@ -1976,8 +2019,8 @@
               return item;
             });
             if (ifEnter) {
+              setSelectionRange(sr, end + num1, end + num1);
               newarr.splice(end, 0, ite);
-              newarr.length++;
               ifEnter = false;
             }
             break;
@@ -2016,9 +2059,32 @@
               });
               return str1 + "\n";
             });
-            newarr = newarr.map((i, ind) => {
-              return i.replaceAll(",", "\n") + "\n";
+            newarr = newarr.map((it, ind) => {
+              let str = "";
+              for (let i = 0; i < it.length; i++) {
+                if (it[i] === ",") {
+                  str += "\n";
+                } else {
+                  if (
+                    it[it.length - 1] === "\n" &&
+                    i === it.length - 1 &&
+                    ind === newarr.length - 2
+                  ) {
+                    it[it.length - 1] = "";
+                  } else {
+                    str += it[i];
+                  }
+                }
+              }
+              if (ind === newarr.length - 2) {
+                return str;
+              } else {
+                return str + "\n";
+              }
             });
+            if (newarr[newarr.length - 1] === "\n\n") {
+              newarr.pop();
+            }
             break;
           case 4:
             let oldArr = [];
@@ -2051,35 +2117,105 @@
       rContent.style.width = "333.312px";
     };
 
+    const handleNum = (start, end, type, hisArr) => {
+      let typeNum = 0;
+      for (let i = hisArr.length; i > 0; i--) {
+        if (i >= start && i < end) {
+          if (+hisArr[i] >= 0 && hisArr[i] !== " ") {
+            typeNum++;
+            if (typeNum === type) {
+              start = i;
+              return start;
+            }
+          }
+        }
+      }
+      while (typeNum !== type && start >= 0) {
+        typeNum = 0;
+        for (let i = hisArr.length; i >= 0; i--) {
+          if (i >= start && i < end) {
+            if (+hisArr[i] >= 0 && hisArr[i] !== " ") {
+              typeNum++;
+              if (typeNum === type) {
+                start = i;
+              }
+            }
+          }
+        }
+        if (typeNum === type) {
+          return start;
+        } else if (typeNum > type) {
+          start++;
+        } else if (typeNum < type) {
+          start--;
+        }
+      }
+      return start;
+    };
     // 特殊字符
     const specialCode = (
       type,
       Code,
+      addindex = 0,
       ifTrue = false,
       start = oContent.selectionStart || fContent.selectionStart,
       end = oContent.selectionEnd || fContent.selectionEnd
     ) => {
       if (str || Code.length) {
         // 处理内容
-        if (ContentValue.length > 0) {
+        if (IfOContent) {
           hisArr = ContentValue.split("");
         } else {
           hisArr = ContentFiveValue.split("");
         }
         let newarr;
         let listCode;
-        let reg = /[0-7A-GZ/<>]/;
+        let reg = /[0-7A-GZ/<>',{} ]/;
+        let reg1 = /[/<>]/;
+        let reg2 = /[',{}]/;
         let ifjudgu = false;
         let itemlist = [];
+        let specialCodeList = [];
         let judgulist = [];
+        let isNull = false;
+        let isSpecialCode = false;
+        let isSpecialCode1 = false;
         let num1 = 0;
+        let specialNum = 0;
         listCode = Code.split(" ");
+
+        hisArr.map((item, index) => {
+          if (index < end) {
+            if (item === "," || item === "'" || item === "{" || item === "}") {
+              specialNum++;
+            }
+          }
+        });
+        if (!str.length && (type === 3 || type === 2 || type === 4)) {
+          start = end - addindex - specialNum;
+          start = handleNum(start, end, type, hisArr);
+        }
         newarr = hisArr.map((item, index) => {
           if (index >= start && index < end) {
             itemlist.push(index);
             judgulist.push(reg.test(item));
-            if (item === "/" ||item===">"||item==="<") {
+            if (item === "/" || item === ">" || item === "<") {
               num1++;
+              if (
+                hisArr[index - 1] === "," ||
+                hisArr[index - 1] === "'" ||
+                hisArr[index - 1] === "{" ||
+                hisArr[index - 1] === "}"
+              ) {
+                num1++;
+              }
+            }
+            if (item === " " && !str.length) {
+              num1++;
+              isNull = true;
+            } else if (item === " " && str.length) {
+              num1++;
+              isNull = false;
             }
           }
           return item;
@@ -2088,110 +2224,198 @@
         if (!ifjudgu) {
           alert("您选中的值不属于0-7,A-G,Z中之一!");
         } else {
+          if (num1 > 0 && (type === 3 || type === 2 || type === 4)) {
+            itemlist = [];
+            judgulist = [];
+            newarr = hisArr.map((item, index) => {
+              if (index >= start && index < end) {
+                if (reg1.test(item)) {
+                  isSpecialCode1 = true;
+                  return "";
+                } else if (reg2.test(item)) {
+                  isSpecialCode = true;
+                  specialCodeList.push(index);
+                  return item;
+                } else if (item === " " && !str.length) {
+                  isNull = true;
+                } else if (item === " " && !isNull && str.length) {
+                  return "";
+                } else {
+                  itemlist.push(index);
+                  judgulist.push(reg.test(item));
+                }
+              }
+              return item;
+            });
+          }
           switch (type) {
             case 1:
               if (end - start > 2) {
                 return alert("数字数量不对，点击无效");
               } else {
-                if (str.length) {
-                  newarr.splice(itemlist[0], 0, listCode[0]);
-                  newarr.splice(itemlist[0] + 2, 0, listCode[1]);
-                  newarr.length + 2;
-                } else {
-                  newarr.splice(end, 0, listCode[0]);
-                  newarr.splice(end + 2, 0, listCode[1]);
-                  newarr.length + 2;
-                }
+                var sr =
+                  document.getElementById("content") ||
+                  document.getElementById("content_five");
+                newarr.splice(end, 0, listCode[0]);
+                newarr.splice(end + 1, 0, listCode[1]);
+                newarr.splice(end + 2, 0, listCode[2]);
+                newarr.splice(end + 3, 0, listCode[3]);
+                newarr.length + 4;
+                setSelectionRange(sr, end + 1, end + 1);
               }
               break;
             case 2:
-              if (num1 > 0) {
-                itemlist = []
-                judgulist = []
-                newarr = hisArr.map((item, index) => {
-                  if (index >= start && index < end) {
-                    if (item === "/"||item===">"||item==="<") {
-                      return '';
-                    }else{
-                      itemlist.push(index);
-                      judgulist.push(reg.test(item));
-                    }
-                  }
-                  return item;
-                });
-              }
-              if (type + num1 !== end - start) {
+              if ((str.length && type + num1 !== end - start) || isNull) {
                 return alert("数字数量不对，点击无效");
               } else {
-                for (let i = 0; i < 2; i++) {
-                  newarr.splice(itemlist[i] + 1 + 1 * i, 0, listCode[i + 1]);
-                  newarr.length++;
+                if (listCode.length > 3) {
+                  if (listCode.length === 4 &&listCode[1] !== "/") {
+                    if (isSpecialCode && specialCodeList.length > 2) {
+                      newarr.splice(specialCodeList[1] + 1, 0, " ");
+                      newarr.splice(specialCodeList[1] + 2, 0, listCode[1]);
+                      newarr.splice(specialCodeList[1] + 3, 0, " ");
+                    } else if (isSpecialCode && specialCodeList.length == 2) {
+                      newarr.splice(specialCodeList[0] + 1, 0, " ");
+                      newarr.splice(specialCodeList[0] + 2, 0, listCode[1]);
+                      newarr.splice(specialCodeList[0] + 3, 0, " ");
+                    } else{
+                      newarr.splice(itemlist[0] + 1, 0, " ");
+                      newarr.splice(itemlist[0] + 2, 0, listCode[1]);
+                      newarr.splice(itemlist[0] + 3, 0, " ");
+                    }
+                  }
+                  end += 3
+                } else {
+                  for (let i = 0; i < 2; i++) {
+                    if (isSpecialCode || !str.length) {
+                      if (isSpecialCode1 &&listCode.length === 3 &&listCode[1] !== "/" &&!isSpecialCode) {
+                        newarr.splice(itemlist[i] + 1 + 1 * i,0,listCode[i + 1]);
+                      } else if (isSpecialCode) {
+                        if (specialCodeList.length > 2) {
+                          newarr.splice(specialCodeList[i + 1] + 2 + 1 * i,0,listCode[i + 1]);} else {
+                          newarr.splice(specialCodeList[i] + 1 + 1 * i,0,listCode[i + 1]);
+                        }
+                      } else {
+                        newarr.splice(itemlist[i] + 1 + 1 * i,0,listCode[i + 1]);
+                      }
+                    } else {
+                      newarr.splice(itemlist[i] + 1 + 1 * i,0,listCode[i + 1]);
+                    }
+                    end++;
+                  }
                 }
+              }
+
+              str.length = 0;
+              if (!str.length) {
+                newarr.splice(end, 0, " ");
+                end += 1;
               }
               break;
             case 3:
-              if (num1 > 0) {
-                itemlist = []
-                judgulist = []
-                newarr = hisArr.map((item, index) => {
-                  if (index >= start && index < end) {
-                    if (item === "/"||item===">"||item==="<") {
-                      return '';
-                    }else{
-                      itemlist.push(index);
-                      judgulist.push(reg.test(item));
-                    }
-                  }
-                  return item;
-                });
-              }
-              if (type + num1 !== end - start) {
+              if ((str.length && type + num1 !== end - start) || isNull) {
                 return alert("数字数量不对，点击无效");
               } else {
                 if (listCode.length === 4) {
                   for (let i = 0; i < 3; i++) {
-                    newarr.splice(itemlist[i] + 1 + 1 * i, 0, listCode[i + 1]);
-                    newarr.length++;
+                    if (isSpecialCode) {
+                      if (specialCodeList.length > 3) {
+                        newarr.splice(
+                          specialCodeList[2 * i + 1] + 2 + 1 * i,
+                          0,
+                          listCode[i + 1]
+                        );
+                      } else {
+                        newarr.splice(
+                          specialCodeList[i] + 1 + 1 * i,
+                          0,
+                          listCode[i + 1]
+                        );
+                      }
+                    } else {
+                      newarr.splice(
+                        itemlist[i] + 1 + 1 * i,
+                        0,
+                        listCode[i + 1]
+                      );
+                    }
+                    end++;
                   }
                 } else if (listCode.length === 1) {
                   newarr.splice(itemlist[0], 0, listCode[0]);
-                  newarr.length++;
-                } else {
-                  if (listCode.length === 5) {
-                    newarr.splice(itemlist[0], 0, listCode[0]);
-                  } else {
-                    newarr.splice(itemlist[0] + 1, 0, listCode[1]);
+                  for (let index = 0; index < itemlist.length; index++) {
+                    newarr.splice(itemlist[index] + 2 + 1 * index, 0, "//");
+                    end++;
                   }
-                  newarr.splice(itemlist[0] + 2, 0, " ");
-                  newarr.splice(itemlist[0] + 4, 0, " ");
-                  newarr.splice(itemlist[0] + 6, 0, listCode[6]);
-                  newarr.length + 4;
-                }
-              }
-              break;
-            case 4:
-              if (num1 > 0) {
-                itemlist = []
-                judgulist = []
-                newarr = hisArr.map((item, index) => {
-                  if (index >= start && index < end) {
-                    if (item === "/"||item===">"||item==="<") {
-                      return '';
-                    }else{
-                      itemlist.push(index);
-                      judgulist.push(reg.test(item));
+                  end++;
+                } else {
+                  if (isSpecialCode) {
+                    if (specialCodeList.length > 3) {
+                      newarr.splice(specialCodeList[0] + 2, 0, listCode[1]);
+                      newarr.splice(specialCodeList[0] + 3, 0, " ");
+                      newarr.splice(specialCodeList[3] + 3, 0, " ");
+                      newarr.splice(specialCodeList[5] + 4, 0, listCode[6]);
+                    } else {
+                      newarr.splice(specialCodeList[0] + 1, 0, listCode[1]);
+                      newarr.splice(specialCodeList[0] + 2, 0, " ");
+                      newarr.splice(specialCodeList[1] + 3, 0, " ");
+                      newarr.splice(specialCodeList[2] + 4, 0, listCode[6]);
+                    }
+                  } else {
+                    if (isSpecialCode1) {
+                      newarr.splice(itemlist[0] + 1, 0, listCode[1]);
+                      newarr.splice(itemlist[0] + 2, 0, " ");
+                      newarr.splice(itemlist[1] + 3, 0, " ");
+                      newarr.splice(itemlist[2] + 4, 0, listCode[6]);
+                    } else {
+                      if (listCode.length === 5) {
+                        newarr.splice(itemlist[0], 0, listCode[0]);
+                      } else {
+                        newarr.splice(itemlist[0] + 1, 0, listCode[1]);
+                      }
+                      newarr.splice(itemlist[0] + 2, 0, " ");
+                      newarr.splice(itemlist[1] + 3, 0, " ");
+                      newarr.splice(itemlist[2] + 4, 0, listCode[6]);
                     }
                   }
-                  return item;
-                });
+                  end += 4;
+                }
+                if (!str.length) {
+                  newarr.splice(end, 0, " ");
+                  end += 1;
+                }
               }
-              if (type + num1 !== end - start) {
+              str.length = 0;
+              break;
+            case 4:
+              if ((str.length && type + num1 !== end - start) || isNull) {
                 return alert("数字数量不对，点击无效");
               } else {
                 for (let i = 0; i < 4; i++) {
-                  newarr.splice(itemlist[i] + 1 + 1 * i, 0, listCode[1]);
-                  newarr.length++;
+                  if (isSpecialCode) {
+                    if (specialCodeList.length > 4) {
+                      newarr.splice(
+                        specialCodeList[2 * i + 1] + 2 + 1 * i,
+                        0,
+                        listCode[i + 1]
+                      );
+                    } else {
+                      newarr.splice(
+                        specialCodeList[i] + 1 + 1 * i,
+                        0,
+                        listCode[i + 1]
+                      );
+                    }
+                  } else {
+                    newarr.splice(itemlist[i] + 1 + 1 * i, 0, listCode[1]);
+                  }
+                  end++;
                 }
+              }
+              str.length = 0;
+              if (!str.length) {
+                newarr.splice(end, 0, " ");
+                end += 1;
               }
               break;
             case 5:
@@ -2199,7 +2423,9 @@
                 return alert("数字数量不对，点击无效");
               } else {
                 newarr.splice(itemlist[0], 0, listCode[0]);
-                newarr.length++;
+                for (let index = 0; index < itemlist.length; index++) {
+                  newarr.splice(itemlist[index] + 2 + 1 * index, 0, "//");
+                }
               }
               break;
             case 6:
@@ -2207,7 +2433,9 @@
                 return alert("数字数量不对，点击无效");
               } else {
                 newarr.splice(itemlist[0], 0, listCode[0]);
-                newarr.length++;
+                for (let index = 0; index < itemlist.length; index++) {
+                  newarr.splice(itemlist[index] + 2 + 1 * index, 0, "//");
+                }
               }
               break;
             case 7:
@@ -2215,7 +2443,9 @@
                 return alert("数字数量不对，点击无效");
               } else {
                 newarr.splice(itemlist[0], 0, listCode[0]);
-                newarr.length++;
+                for (let index = 0; index < itemlist.length; index++) {
+                  newarr.splice(itemlist[index] + 2 + 1 * index, 0, "//");
+                }
               }
               break;
             case 8:
@@ -2229,12 +2459,10 @@
                       0,
                       listCode[0]
                     );
-                    newarr.length++;
                   }
                 } else {
                   for (let index = 0; index < itemlist.length - 1; index++) {
                     newarr.splice(itemlist[index] + 1 + 1 * index, 0, " - ");
-                    newarr.length++;
                   }
                 }
               }
@@ -2243,12 +2471,10 @@
               if (end !== 0 && end !== hisArr.length) {
                 newarr.splice(end, 0, " - ");
               }
-              newarr.length++;
               break;
             case 10:
               for (let index = 0; index < itemlist.length - 1; index++) {
                 newarr.splice(itemlist[index] + 1 + 1 * index, 0, listCode[0]);
-                newarr.length++;
               }
               break;
             case 0:
@@ -2267,7 +2493,6 @@
               });
               if (ifEnter) {
                 if (ifTrue) {
-                  console.log(newarr[end - 1]);
                   if (
                     (newarr[end - 1] === "," || newarr[end - 1] === "'") &&
                     newarr[end - 1] !== Code[0]
@@ -2297,7 +2522,7 @@
           backTextTwo = ContentValue;
         }
         num++;
-        if (ContentValue.length > 0) {
+        if (IfOContent) {
           ContentValue = newarr.join("");
           oContent.value = ContentValue;
         } else {
@@ -2306,6 +2531,9 @@
         }
         ifAllOver = false;
         ifTrue = false;
+        isNull = false;
+        isSpecialCode = false;
+        isSpecialCode1 = false;
         str = "";
         num1 = 0;
       }
@@ -2343,44 +2571,36 @@
         switch (Code) {
           case "I":
             newarr.splice(start, 0, "\nI: ");
-            newarr.length++;
             break;
           case "T":
             newarr.splice(start, 0, "T: ");
             for (let index = 0; index < enterlist.length; index++) {
               newarr.splice(enterlist[index] + 2 + 1 * index, 0, "T: ");
-              newarr.length++;
             }
-            newarr.length++;
             break;
           case "C":
             newarr.splice(start, 0, "C: ");
             for (let index = 0; index < enterlist.length; index++) {
               newarr.splice(enterlist[index] + 2 + 1 * index, 0, "C: ");
-              newarr.length++;
             }
-            newarr.length++;
             break;
           case "QMLK":
             let itemcode = Code.split("");
             if (str.length) {
+              if (str.length === 3) {
+                enterlist.push(end - 2);
+              }
               newarr.splice(start, 0, `${itemcode[0]}: `);
-              for (let index = 0; index < itemcode.length; index++) {
+              for (let index = 0; index < itemcode.length - 1; index++) {
                 newarr.splice(
                   enterlist[index] + 1 * index + 2,
                   0,
                   `${itemcode[index + 1]}: `
                 );
-                newarr.length++;
               }
             } else {
-              for (let index = itemcode.length; index > 0; index--) {
-                newarr.splice(
-                  enterlist[index] + 1 * index + 1,
-                  0,
-                  `${itemcode[index - 1]}: \n`
-                );
-                newarr.length++;
+              for (let index = 0; index < itemcode.length; index++) {
+                newarr.splice(end + 1 * index + 1, 0, `${itemcode[index]}: \n`);
               }
             }
             break;
@@ -2424,6 +2644,12 @@
       contentarr.forEach((item, index) => {
         if (item.indexOf("\n") === 0) {
           contentarr[index] = contentarr[index].replace(/\n/, "");
+        }
+        if (
+          item.lastIndexOf("\n") === item.length - 1 &&
+          index === contentarr.length - 1
+        ) {
+          contentarr[index] = contentarr[index].slice(0, item.length - 1);
         }
       });
       contentRightarr.forEach((item, index) => {
@@ -2476,7 +2702,7 @@
     ) => {
       if (str || val.length || ifAllOver) {
         // 处理内容
-        if (ContentValue.length > 0) {
+        if (IfOContent) {
           hisArr = ContentValue.split("");
         } else {
           hisArr = ContentFiveValue.split("");
@@ -2487,7 +2713,6 @@
         var sr =
           document.getElementById("content") ||
           document.getElementById("content_right");
-        setSelectionRange(sr, end + num1, end + num1);
         if (hisArr.length > 0) {
           newarr = hisArr.map((item, index) => {
             if (
@@ -2499,11 +2724,11 @@
             return item;
           });
           if (str.length) {
+            num1 = val.length - str.length;
             newarr.splice(start, end - start, val);
           } else {
             if (ifEnter) {
               newarr.splice(end, 0, val);
-              newarr.length++;
               ifEnter = false;
             }
           }
@@ -2515,18 +2740,53 @@
         } else {
           backTextTwo = ContentValue;
         }
-        if (ContentValue.length > 0) {
+        if (IfOContent) {
           ContentValue = newarr.join("");
           oContent.value = ContentValue;
         } else {
           ContentFiveValue = newarr.join("");
           fContent.value = ContentFiveValue;
         }
+        setSelectionRange(sr, end + num1, end + num1);
         num++;
         num1 = 0;
         ifAllOver = false;
         str = "";
       }
+    };
+
+    oContent.onfocus = () => {
+      //检测text变动
+      const config = {
+        attributes: true,
+        childList: false,
+        subtree: true,
+        attributeFilter: ["style"],
+        attributeOldValue: true,
+      };
+      const observer = new MutationObserver((mutationsList, observer) => {
+        width = getComputedStyle(oContent).getPropertyValue("width");
+        width = width.split("px")[0];
+        rContent.style.width = 772 - width + "px";
+      });
+      //开始观测
+      observer.observe(oContent, config);
+    };
+
+    rContent.onfocus = () => {
+      const config = {
+        attributes: true,
+        childList: false,
+        subtree: true,
+        attributeFilter: ["style"],
+        attributeOldValue: true,
+      };
+      const observerRight = new MutationObserver((mutationsList, observer) => {
+        width = getComputedStyle(rContent).getPropertyValue("width");
+        width = width.split("px")[0];
+        oContent.style.width = 772 - width + "px";
+      });
+      observerRight.observe(rContent, config);
     };
   </script>
 </html>
