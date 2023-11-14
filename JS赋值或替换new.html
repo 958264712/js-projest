@@ -2117,6 +2117,7 @@
       rContent.style.width = "333.312px";
     };
 
+    // 计算start起始
     const handleNum = (start, end, type, hisArr) => {
       let typeNum = 0;
       for (let i = hisArr.length; i > 0; i--) {
@@ -2191,9 +2192,12 @@
             }
           }
         });
-        if (!str.length && (type === 3 || type === 2 || type === 4)) {
+        if (type === 3 || type === 2 || type === 4) {
           start = end - addindex - specialNum;
           start = handleNum(start, end, type, hisArr);
+          if (start < 0) {
+            start = 0;
+          }
         }
         newarr = hisArr.map((item, index) => {
           if (index >= start && index < end) {
@@ -2206,6 +2210,14 @@
                 hisArr[index - 1] === "'" ||
                 hisArr[index - 1] === "{" ||
                 hisArr[index - 1] === "}"
+              ) {
+                num1++;
+              }
+              if (
+                hisArr[index - 2] === "," ||
+                hisArr[index - 2] === "'" ||
+                hisArr[index - 1] === "{" ||
+                hisArr[index - 2] === "}"
               ) {
                 num1++;
               }
@@ -2269,7 +2281,7 @@
                 return alert("数字数量不对，点击无效");
               } else {
                 if (listCode.length > 3) {
-                  if (listCode.length === 4 &&listCode[1] !== "/") {
+                  if (listCode.length === 4 && listCode[1] !== "/") {
                     if (isSpecialCode && specialCodeList.length > 2) {
                       newarr.splice(specialCodeList[1] + 1, 0, " ");
                       newarr.splice(specialCodeList[1] + 2, 0, listCode[1]);
@@ -2278,25 +2290,42 @@
                       newarr.splice(specialCodeList[0] + 1, 0, " ");
                       newarr.splice(specialCodeList[0] + 2, 0, listCode[1]);
                       newarr.splice(specialCodeList[0] + 3, 0, " ");
-                    } else{
+                    } else {
                       newarr.splice(itemlist[0] + 1, 0, " ");
                       newarr.splice(itemlist[0] + 2, 0, listCode[1]);
                       newarr.splice(itemlist[0] + 3, 0, " ");
                     }
                   }
-                  end += 3
+                  end += 3;
                 } else {
-                  for (let i = 0; i < 2; i++) {
-                    if (isSpecialCode || !str.length) {
-                      if (isSpecialCode1 &&listCode.length === 3 &&listCode[1] !== "/" &&!isSpecialCode) {
-                        newarr.splice(itemlist[i] + 1 + 1 * i,0,listCode[i + 1]);
-                      } else if (isSpecialCode) {
-                        if (specialCodeList.length > 2) {
-                          newarr.splice(specialCodeList[i + 1] + 2 + 1 * i,0,listCode[i + 1]);} else {
-                          newarr.splice(specialCodeList[i] + 1 + 1 * i,0,listCode[i + 1]);
+                  let concat;
+                  if (specialCodeList.length === 3) {
+                    for (let i = 1; i < specialCodeList.length; i++) {
+                      for (let j = 0; j < i; j++) {
+                        if (specialCodeList[i] - specialCodeList[j] === 1) {
+                          specialCodeList.splice(specialCodeList.indexOf(specialCodeList[j]),1);
                         }
+                      }
+                    }
+                    concat = specialCodeList;
+                  } else {
+                    concat = specialCodeList.concat(itemlist);
+                  }
+                  concat = concat.sort((a, b) => {return a - b;});
+                  for (let i = 1; i < concat.length; i++) {
+                    for (let j = 0; j < i; j++) {
+                      if (concat[i] - concat[j] === 1) {
+                        concat.splice(concat.indexOf(concat[j]), 1);
+                      }
+                    }
+                  }
+                  for (let i = 0; i < 2; i++) {
+                    if (isSpecialCode) {
+                      // 带特殊符号
+                      if (specialCodeList.length === 4) {
+                        newarr.splice(specialCodeList[i + 1] + 2 + 1 * i,0,listCode[i + 1]);
                       } else {
-                        newarr.splice(itemlist[i] + 1 + 1 * i,0,listCode[i + 1]);
+                        newarr.splice(concat[i] + 1 + 1 * i,0,listCode[i + 1]);
                       }
                     } else {
                       newarr.splice(itemlist[i] + 1 + 1 * i,0,listCode[i + 1]);
@@ -2305,12 +2334,9 @@
                   }
                 }
               }
-
               str.length = 0;
-              if (!str.length) {
-                newarr.splice(end, 0, " ");
-                end += 1;
-              }
+              newarr.splice(end, 0, " ");
+              end += 1;
               break;
             case 3:
               if ((str.length && type + num1 !== end - start) || isNull) {
@@ -2380,11 +2406,9 @@
                   }
                   end += 4;
                 }
-                if (!str.length) {
-                  newarr.splice(end, 0, " ");
-                  end += 1;
-                }
               }
+              newarr.splice(end, 0, " ");
+              end += 1;
               str.length = 0;
               break;
             case 4:
@@ -2413,10 +2437,8 @@
                 }
               }
               str.length = 0;
-              if (!str.length) {
-                newarr.splice(end, 0, " ");
-                end += 1;
-              }
+              newarr.splice(end, 0, " ");
+              end += 1;
               break;
             case 5:
               if (type + num1 !== end - start) {
