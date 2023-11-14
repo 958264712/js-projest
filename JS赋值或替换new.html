@@ -1271,6 +1271,7 @@
       IfOContent = false;
       ContentFiveValue = e.target.value;
     });
+
     const handleFun = (
       type,
       start = oContent.selectionStart,
@@ -2174,16 +2175,19 @@
       type,
       Code,
       addindex = 0,
-      ifTrue = false,
-      start = oContent.selectionStart || fContent.selectionStart,
-      end = oContent.selectionEnd || fContent.selectionEnd
+      ifTrue = false
     ) => {
       if (str || Code.length) {
         // 处理内容
-        if (IfOContent) {
+         if (IfOContent) {
           hisArr = ContentValue.split("");
+          start = oContent.selectionStart
+          end = oContent.selectionEnd
+          
         } else {
           hisArr = ContentFiveValue.split("");
+          start = fContent.selectionStart
+          end = fContent.selectionEnd
         }
         let newarr;
         let listCode;
@@ -2584,7 +2588,6 @@
         num1 = 0;
       }
     };
-
     // 点击添加
     const clickaddspecialCode = (
       type,
@@ -2636,13 +2639,15 @@
               if (str.length === 3) {
                 enterlist.push(end - 2);
               }
-              newarr.splice(start, 0, `${itemcode[0]}: `);
-              for (let index = 0; index < itemcode.length - 1; index++) {
-                newarr.splice(
-                  enterlist[index] + 1 * index + 2,
-                  0,
-                  `${itemcode[index + 1]}: `
-                );
+              if(enterlist.length > 1){
+                newarr.splice(start, 0, `${itemcode[0]}: `);
+                for (let index = 0; index < itemcode.length - 1; index++) {
+                  newarr.splice(enterlist[index] + 1 * index + 2,0,`${itemcode[index + 1]}: `);
+                }
+              }else{
+                for (let index = 0; index < itemcode.length; index++) {
+                  newarr.splice(end + 1 * index + 1,0,`${itemcode[index]}: \n`);
+                }
               }
             } else {
               for (let index = 0; index < itemcode.length; index++) {
@@ -2759,30 +2764,29 @@
       }
     };
     //冒号左
-    const maohaofanfuzuo = (
-      val,
-      start = oContent.selectionStart || fContent.selectionStart,
-      end = oContent.selectionEnd || fContent.selectionEnd
-    ) => {
+    const maohaofanfuzuo = (val) => {
       if (str || val.length || ifAllOver) {
         // 处理内容
+        var sr 
         if (IfOContent) {
           hisArr = ContentValue.split("");
+          sr =document.getElementById("content")
+          start = oContent.selectionStart
+          end = oContent.selectionEnd
+          
         } else {
           hisArr = ContentFiveValue.split("");
+          sr = document.getElementById("content_five");
+          start = fContent.selectionStart
+          end = fContent.selectionEnd
         }
         let ifEnter = false;
         let newarr = [];
         let num1 = val.length;
-        var sr =
-          document.getElementById("content") ||
-          document.getElementById("content_right");
+        
         if (hisArr.length > 0) {
           newarr = hisArr.map((item, index) => {
-            if (
-              index === end ||
-              (index + 1 === hisArr.length && hisArr[index] !== val)
-            ) {
+            if (index === end ||(index + 1 === hisArr.length && hisArr[index] !== val)) {
               ifEnter = true;
             }
             return item;
@@ -2792,7 +2796,7 @@
             newarr.splice(start, end - start, val);
           } else {
             if (ifEnter) {
-              newarr.splice(end, 0, val);
+              newarr.splice(end , 0, val);
               ifEnter = false;
             }
           }
