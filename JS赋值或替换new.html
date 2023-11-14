@@ -2216,8 +2216,8 @@
           }
         }else if(type===8 && !str.length){
           start = handleNum(start,end,1,hisArr)
-        }else if(type===12){
-          start = handleNum(start,end,4,hisArr)
+        }else if(type===12 && !str.length){
+          start = handleNum(start,end,1,hisArr)
         }
         newarr = hisArr.map((item, index) => {
           if (index >= start && index < end) {
@@ -2500,9 +2500,15 @@
                   }
               break;
             case 12:
-                  for (let index = 0; index < itemlist.length - 1; index++) {
-                    newarr.splice(itemlist[index] + 1 + 1 * index, 0, " - ");
-                  }
+              if(itemlist.length > 1){
+                for (let index = 0; index < itemlist.length-1; index++) {
+                  newarr.splice(itemlist[index] + 1 + 1 * index, 0, " - ");
+                }
+              }else{
+                for (let index = 0; index < itemlist.length; index++) {
+                  newarr.splice(itemlist[index] + 1 + 1 * index, 0, " - ");
+                }
+              }
               break;
             case 9:
                 newarr.splice(end + 1, 0 , ' ');
