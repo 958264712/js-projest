@@ -2,13 +2,12 @@
 <html lang="zh-cn">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
     <meta name="renderer" content="webkit" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta name="applicable-device" content="pc" />
     <meta http-equiv="Cache-Control" content="no-transform" />
     <meta http-equiv="Cache-Control" content="no-siteapp" />
-    <!-- <script src="https://cdn.jsdelivr.net/npm/vexflow@4.2.2/build/cjs/vexflow.js"></script> -->
-    <script src="path-to-scripts/vexflow.min.js"></script>   
     <title>JS替换等操作</title>
     <style>
       /*全局*/
@@ -474,7 +473,7 @@
 
       .btn-xl label {
         width: 56px;
-        line-height: 28px;
+        line-height: 24px;
         font-size: 14px;
         text-align: center;
         border-radius: 2px;
@@ -514,7 +513,7 @@
 
       .btn-gc label {
         width: 56px;
-        line-height: 28px;
+        line-height: 24px;
         font-size: 14px;
         text-align: center;
         border-radius: 3px;
@@ -620,6 +619,9 @@
         width: 100%;
         height: 100%;
         line-height: 18px;
+        overflow: auto;
+        padding: 0;
+        box-sizing: border-box;
       }
 
       /****最右侧（第四列）样式 E ****/
@@ -635,13 +637,16 @@
       .dshao,
       .dchao,
       .dszhunxinghao,
+      .sangebafen,
+      .sifenfudian,
       .gaoyin,
       .erbayinfu,
       .diyin,
       .qianbahoushiliu,
       .qianshiliuhouba,
-      .qyuanyinfu,
       .erfenyinfu,
+      .erfenfudian,
+      .quanyinfu,
       .sifenyinfu,
       .bafenyinfu,
       .shiliufenyinfu,
@@ -737,12 +742,16 @@
         background-position: 427px -22px;
       }
 
-      .qyuanyinfu {
+      .erfenfudian {
+        background-position: 427px -1244px;
+      }
+
+      .quanyinfu {
         background-position: 427px 2px;
       }
 
       .xiaosanlianyin {
-        background-position: 428px -298px;
+        background-position: 411px -285px;
       }
 
       /****左侧竖排按钮****/
@@ -794,6 +803,14 @@
       .dszhunxinghao {
         background-position: 540px -1051px;
         background-size: 720%;
+      }
+
+      .sangebafen {
+        background-position: 409px -1216px;
+      }
+
+      .sifenfudian {
+        background-position: 413px -1240px;
       }
 
       .banzhongzhi {
@@ -908,8 +925,8 @@
       }
 
       .chanyinhao {
-        background-position: 424px -1212px;
-        background-size: 560%;
+        background-position: 366px -1122px;
+        background-size: 480%;
       }
 
       .zhuandiaohao {
@@ -918,10 +935,30 @@
       }
 
       .finejihao {
-        background-position: 479px -1415px;
-        background-size: 640%;
+        background-position: 424px -1212px;
+        background-size: 560%;
       }
 
+      /* 遮罩层 */
+      #mock{
+        position: fixed;
+        width: 100vw;
+        height: 100vh;  
+        background-color: #4f5157;
+        opacity: .7;
+        display: none;
+      }
+      #close{
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        font-size: 32px;
+        font-weight: 700;
+        background-color: #4f5157;
+        color: #000;
+        cursor: pointer;
+        border: none;
+      }
       /****按键背景样式 E ., ., ., .zhuandiaohao, .,****/
     </style>
   </head>
@@ -931,31 +968,66 @@
       <div class="lay-one">
         <ul>
           <li>
-            <i title="这个标签触发提示弹层用的">?</i
+            <i title="这个标签触发提示弹层用的" onclick="clickMock(true)">?</i
             ><label
               title="这个标签用于按钮触发"
               class="maohaofanfuzuo"
-              onclick="maohaofanfuzuo(' |:')"
+              onclick="zhijiefuzhi(' |:')"
+            ></label>
+          </li>
+          <li>
+            <i>?</i
+            ><label class="maohaofanfuyou" onclick="zhijiefuzhi(' :|')">
+            </label>
+          </li>
+          <li>
+            <i>?</i
+            ><label class="zuoyoufanyou" onclick="zhijiefuzhi(' :||:')">
+            </label>
+          </li>
+          <li>
+            <i>?</i
+            ><label class="danfangzi" onclick="zhuanhuanfuzhi(1,7)"> </label>
+          </li>
+          <li>
+            <i>?</i
+            ><label class="duofangzi" onclick="zhuanhuanfuzhi(2,11)"> </label>
+          </li>
+          <li>
+            <i>?</i
+            ><label class="dasjihao" onclick="zhijiefuzhi('!SEGNO!')"> </label>
+          </li>
+          <li>
+            <i>?</i
+            ><label class="zhunxinghao" onclick="zhijiefuzhi('!CODA2!')">
+            </label>
+          </li>
+          <li>
+            <i>?</i
+            ><label class="dshao" onclick="zhijiefuzhi('!D.S.!')"> </label>
+          </li>
+          <li>
+            <i>?</i
+            ><label
+              class="dszhunxinghao"
+              onclick="zhijiefuzhi('!CODA2!!D.S.!')"
             >
             </label>
           </li>
-          <li><i>?</i><label class="maohaofanfuyou"> </label></li>
-          <li><i>?</i><label class="zuoyoufanyou"> </label></li>
-          <li><i>?</i><label class="danfangzi"> </label></li>
-          <li><i>?</i><label class="duofangzi"> </label></li>
-          <li><i>?</i><label class="dasjihao"> </label></li>
-          <li><i>?</i><label class="zhunxinghao"> </label></li>
-          <li><i>?</i><label class="dshao"> </label></li>
-          <li><i>?</i><label class="dszhunxinghao"> </label></li>
-          <li><i>?</i><label class="dchao"> </label></li>
           <li>
             <i>?</i
-            ><label class="gaoyindian" onclick="specialCode(0,`'`,true)">
+            ><label class="dchao" onclick="zhijiefuzhi('!D.C.!')"> </label>
+          </li>
+          <!-- <li><i>?</i><label class="gaoyindian" onclick="specialCode(0,`'`,true)"> </label></li>
+          <li><i>?</i><label class="diyindian" onclick="specialCode(0,`,`,true)"> </label></li> -->
+          <li>
+            <i>?</i
+            ><label class="sangebafen" onclick="specialCode(3,' / / /')">
             </label>
           </li>
           <li>
             <i>?</i
-            ><label class="diyindian" onclick="specialCode(0,`,`,true)">
+            ><label class="sifenfudian" onclick="zhijiefuzhi('三/二 ')">
             </label>
           </li>
           <li>
@@ -975,17 +1047,28 @@
           </li>
           <li>
             <i>?</i
-            ><label class="paineiduolianxian" onclick="specialCode(10,`-`)">
+            ><label class="paineiduolianxian" onclick="specialCode(10,`() `)">
             </label>
           </li>
-          <li><i>?</i><label class="shenghao"> </label></li>
-          <li><i>?</i><label class="jianghao"> </label></li>
-          <li><i>?</i><label class="huanyuanhao"> </label></li>
-          <li><i>?</i><label class="quanzhongzhi"> </label></li>
+          <li>
+            <i>?</i><label class="shenghao" onclick="zhijiefuzhi('^')"> </label>
+          </li>
+          <li>
+            <i>?</i><label class="jianghao" onclick="zhijiefuzhi('_')"> </label>
+          </li>
+          <li>
+            <i>?</i
+            ><label class="huanyuanhao" onclick="zhijiefuzhi('=')"> </label>
+          </li>
+          <li>
+            <i>?</i
+            ><label class="quanzhongzhi" onclick="specialCode(11,` |]\n`)">
+            </label>
+          </li>
         </ul>
       </div>
       <div class="lay-tow">
-        <div id="myCanvas"></div>
+        <div class="lay-img"></div>
         <div class="lay-m-tool">
           <ul>
             <li>
@@ -1058,16 +1141,17 @@
             </li>
             <li>
               <i>?</i
-              ><label class="erfenyinfu" onclick="specialCode(0,'二')"> </label>
-            </li>
-            <li>
-              <i>?</i
-              ><label class="qyuanyinfu" onclick="specialCode(0,'四')"> </label>
-            </li>
-            <li>
-              <i>?</i
-              ><label class="xiaosanlianyin" onclick="specialCode(3,`(三`)">
+              ><label class="erfenyinfu" onclick="specialCode(0,'二 ')">
               </label>
+            </li>
+            <li>
+              <i>?</i
+              ><label class="erfenfudian" onclick="specialCode(0,'三 ')">
+              </label>
+            </li>
+            <li>
+              <i>?</i
+              ><label class="quanyinfu" onclick="specialCode(0,'四 ')"> </label>
             </li>
           </ul>
         </div>
@@ -1075,12 +1159,15 @@
           <div class="lay-l" id="lay-l">
             <ul>
               <li class="btn-xl">
+                <label onclick="zhijiefuzhi(' ')">空格</label>
                 <label onclick="handleFun(`'`)">引号'</label>
                 <label onclick="handleFun(`''`)">引号''</label>
                 <label onclick="handleFun(`,`)">逗号,</label>
                 <label onclick="handleFun(`,,`)">逗号,,</label>
                 <label onclick="oneSlash()">斜杠/</label>
                 <label onclick="twoSlash()">斜杠//</label>
+                <label onclick="zhijiefuzhi('(')">左括 (</label>
+                <label onclick="zhijiefuzhi(')')">右括 )</label>
                 <label onclick="onGoBack()">撤销</label>
               </li>
               <li class="text-xl">
@@ -1099,6 +1186,7 @@
                 <label onclick="changeItem(3)">转字母</label>
                 <label onclick="handleItemV2('V2')">音轨V2</label>
                 <label onclick="handleItemV(4,'4V1')">4/4V1</label>
+                <label onclick="handleItemV(2,'4V1')">2/4V1</label>
               </li>
               <li class="text-gc">
                 <textarea
@@ -1119,7 +1207,9 @@
                 <label onclick="changeRightItem(2,'~')">二词音</label>
                 <label onclick="changeRightItem(3)">排段落</label>
                 <label onclick="returnBox()">框复位</label>
-                <label onclick="changeRightItem(4,'W')">添加W:</label>
+                <label onclick="changeRightItem(5,'W:\t')">无词W:</label>
+                <label onclick="changeRightItem(5,'\n\n')">换+空行</label>
+                <label onclick="changeRightItem(4,'W')">词前W:</label>
               </li>
             </ul>
           </div>
@@ -1137,18 +1227,50 @@
             ><label
               title="这个标签用于按钮触发"
               class="sierpai"
-              onclick="maohaofanfuzuo('[M: 2/4]')"
+              onclick="zhijiefuzhi('[M: 2/4]')"
             ></label>
           </li>
-          <li><i>?</i><label class="sisanpai"> </label></li>
-          <li><i>?</i><label class="sisipai"> </label></li>
-          <li><i>?</i><label class="basanpai"> </label></li>
-          <li><i>?</i><label class="baliupai"> </label></li>
-          <li><i>?</i><label class="ziyouyanchang"> </label></li>
+          <li>
+            <i>?</i
+            ><label class="sisanpai" onclick="zhijiefuzhi('[M: 3/4]')"> </label>
+          </li>
+          <li>
+            <i>?</i
+            ><label class="sisipai" onclick="zhijiefuzhi('[M: 4/4]')"> </label>
+          </li>
+          <li>
+            <i>?</i
+            ><label class="basanpai" onclick="zhijiefuzhi('[M: 3/8]')"> </label>
+          </li>
+          <li>
+            <i>?</i
+            ><label class="baliupai" onclick="zhijiefuzhi('[M: 6/8]')"> </label>
+          </li>
+          <li>
+            <i>?</i
+            ><label class="ziyouyanchang" onclick="zhijiefuzhi('!HOLD!')">
+            </label>
+          </li>
           <li><i>?</i><label class="huanqihao"></label></li>
-          <li><i>?</i><label class="chanyinhao"> </label></li>
-          <li><i>?</i><label class="zhuandiaohao"> </label></li>
-          <li><i>?</i><label class="finejihao"> </label></li>
+          <li>
+            <i>?</i
+            ><label class="chanyinhao" onclick="zhijiefuzhi('')"> </label>
+          </li>
+          <li>
+            <i>?</i
+            ><label class="zhuandiaohao" onclick="zhijiefuzhi('转1=')"> </label>
+          </li>
+          <li>
+            <i>?</i
+            ><label class="finejihao" onclick="zhijiefuzhi('!Fine.!')"> </label>
+          </li>
+          <li>
+            <i>?</i
+            ><label
+              class="xiaosanlianyin"
+              onclick="specialCode(3,`(三`)"
+            ></label>
+          </li>
           <li>
             <i>?</i
             ><label class="dasanlianyin" onclick="specialCode(3,`(三    `)">
@@ -1166,7 +1288,6 @@
             <i>?</i
             ><label class="qilianyin" onclick="specialCode(7,`(七`)"> </label>
           </li>
-          <li><i>?</i><label onclick="handleItemV(2,'4V1')">2/4V1</label></li>
           <li><i>?</i><label onclick="handleItemV(3,'4V1')">3/4V1</label></li>
           <li><i>?</i><label onclick="handleItemV(4,'4V1')">4/4V1</label></li>
           <li><i>?</i><label onclick="handleItemV(3,'8V1')">3/8V1</label></li>
@@ -1181,43 +1302,48 @@
           <li><label onclick="clickaddspecialCode(1,`C`)">信息C</label></li>
           <li><label onclick="clickaddspecialCode(1,`QMLK`)">QMLK</label></li>
           <li><label onclick="clickaddspecialCode(0,`V`)">V音轨</label></li>
-          <li><label onclick="maohaofanfuzuo('C')">C</label></li>
-          <li><label>Cmaj7</label></li>
-          <li><label>D</label></li>
-          <li><label>Dm</label></li>
-          <li><label>Dm7</label></li>
-          <li><label>E</label></li>
-          <li><label>Em</label></li>
-          <li><label>F</label></li>
-          <li><label>Fmaj7</label></li>
-          <li><label>G</label></li>
-          <li><label>A</label></li>
-          <li><label>Am</label></li>
-          <li><label>Am7</label></li>
-          <li><label>B</label></li>
-          <li><label>Bm</label></li>
-          <li><label>C7</label></li>
-          <li><label>Cadd9</label></li>
-          <li><label>#Cm</label></li>
-          <li><label>D7</label></li>
-          <li><label>D/#F</label></li>
-          <li><label>bE</label></li>
-          <li><label>E7</label></li>
-          <li><label>Em7</label></li>
-          <li><label>Fm</label></li>
-          <li><label>#F</label></li>
-          <li><label>#Fm</label></li>
-          <li><label>G7</label></li>
-          <li><label>Gm</label></li>
-          <li><label>bA</label></li>
-          <li><label>A7</label></li>
-          <li><label>bB</label></li>
-          <li><label>B7</label></li>
-          <li><label>Bm7</label></li>
+          <li><label onclick="overSort(1)">完整序</label></li>
+          <li><label onclick="overSort(0)">弱起序</label></li>
+          <li><label onclick="zhijiefuzhi('C')">C</label></li>
+          <li><label onclick="zhijiefuzhi('Cmaj7')">Cmaj7</label></li>
+          <li><label onclick="zhijiefuzhi('D')">D</label></li>
+          <li><label onclick="zhijiefuzhi('Dm')">Dm</label></li>
+          <li><label onclick="zhijiefuzhi('Dm7')">Dm7</label></li>
+          <li><label onclick="zhijiefuzhi('E')">E</label></li>
+          <li><label onclick="zhijiefuzhi('Em')">Em</label></li>
+          <li><label onclick="zhijiefuzhi('F')">F</label></li>
+          <li><label onclick="zhijiefuzhi('Fmaj7')">Fmaj7</label></li>
+          <li><label onclick="zhijiefuzhi('G')">G</label></li>
+          <li><label onclick="zhijiefuzhi('A')">A</label></li>
+          <li><label onclick="zhijiefuzhi('Am')">Am</label></li>
+          <li><label onclick="zhijiefuzhi('Am7')">Am7</label></li>
+          <li><label onclick="zhijiefuzhi('B')">B</label></li>
+          <li><label onclick="zhijiefuzhi('Bm')">Bm</label></li>
+          <li><label onclick="zhijiefuzhi('C7')">C7</label></li>
+          <li><label onclick="zhijiefuzhi('Cadd9')">Cadd9</label></li>
+          <li><label onclick="zhijiefuzhi('C#m')">#Cm</label></li>
+          <li><label onclick="zhijiefuzhi('D7')">D7</label></li>
+          <li><label onclick="zhijiefuzhi('D/#F')">D/#F</label></li>
+          <li><label onclick="zhijiefuzhi('Eb')">bE</label></li>
+          <li><label onclick="zhijiefuzhi('E7')">E7</label></li>
+          <li><label onclick="zhijiefuzhi('Em7')">Em7</label></li>
+          <li><label onclick="zhijiefuzhi('Fm')">Fm</label></li>
+          <li><label onclick="zhijiefuzhi('F#')">#F</label></li>
+          <li><label onclick="zhijiefuzhi('F#m')">#Fm</label></li>
+          <li><label onclick="zhijiefuzhi('G7')">G7</label></li>
+          <li><label onclick="zhijiefuzhi('Gm')">Gm</label></li>
+          <li><label onclick="zhijiefuzhi('Ab')">bA</label></li>
+          <li><label onclick="zhijiefuzhi('A7')">A7</label></li>
+          <li><label onclick="zhijiefuzhi('Bb')">bB</label></li>
+          <li><label onclick="zhijiefuzhi('B7')">B7</label></li>
+          <li><label onclick="zhijiefuzhi('Bm7')">Bm7</label></li>
         </ul>
       </div>
       <div class="lay-five">
         <textarea id="content_five" spellcheck="false"></textarea>
+      </div>
+      <div id="mock">
+        <button id="close" onclick="clickMock(false)">X</button>
       </div>
     </div>
   </body>
@@ -1278,9 +1404,10 @@
       start = oContent.selectionStart,
       end = oContent.selectionEnd
     ) => {
-      if (str || ifAllOver) {
+      if (str || ifAllOver || end) {
         // 处理内容
         hisArr = ContentValue.split("");
+        let num1 = 0;
         // 获取下标
         if (ifAllOver) {
           start = 0;
@@ -1291,16 +1418,54 @@
               item = "";
             }
             if (item > 0) {
+              num1++;
               return item + type;
             }
           }
           return item;
         });
+        if (end && !str.length) {
+          // 非选中状态，判断前一个是否为一种符号
+          if (
+            (newarr[end - 1] === "," || newarr[end - 1] === "'") &&
+            newarr[end - 1] !== type
+          ) {
+            switch (type) {
+              case ",":
+                newarr.splice(end, 0, "'");
+                break;
+              case "'":
+                newarr.splice(end, 0, ",");
+                break;
+              case ",,":
+                if(newarr[end - 1] === ","){
+                  newarr.splice(end, 0, ",,");
+                }else{
+                  newarr.splice(end, 0, "''");
+                }
+                num1++
+                break;
+              case "''":
+                if(newarr[end - 1] === ","){
+                  newarr.splice(end, 0, ",,");
+                }else{
+                  newarr.splice(end, 0, "''");
+                }
+                num1++
+                break;
+            }
+            num1++
+          } else {
+            num1++
+            newarr.splice(end, 0, type);
+          }
+        }
         if (num % 2 === 0) {
           backText = ContentValue;
         } else {
           backTextTwo = ContentValue;
         }
+        setSelectionRange(oContent, end + num1, end + num1);
         ContentValue = newarr.join("");
         oContent.value = ContentValue;
         num++;
@@ -1636,7 +1801,7 @@
             newarr = hisArr.map((item, index) => {
               if (index >= start && index < end) {
                 if (item === " " && hisArr[index + 1] === " ") {
-                  return ''
+                  return "";
                 }
                 if (reg.test(item) !== true) {
                   return item;
@@ -1810,7 +1975,7 @@
                 itemList.push(index + 1);
               }
               if (item === " " && hisArr[index + 1] === " ") {
-                return ''
+                return "";
               }
               return item;
             });
@@ -1867,7 +2032,7 @@
             itemList.push(index + 1);
           }
           if (item === " " && hisArr[index + 1] === " ") {
-            return ''
+            return "";
           }
           if (
             item === "2" &&
@@ -1996,7 +2161,7 @@
       start = rContent.selectionStart,
       end = rContent.selectionEnd
     ) => {
-      if (str || ite.length > 0) {
+      if (str || ite.length > 0 || type === 5) {
         // 处理内容
         hisArr = ContentRightValue.split("");
         let newarr;
@@ -2045,9 +2210,9 @@
               if (i === "\n" || index === end - 1) {
                 itemList.push(item);
                 item = [];
-              }else if (i === " " && hisArr[index + 1] === " ") {
-                return
-              }else {
+              } else if (i === " " && hisArr[index + 1] === " ") {
+                return;
+              } else {
                 item.push(i);
               }
             });
@@ -2074,7 +2239,6 @@
               return str1 + "\n";
             });
             newarr = newarr.map((it, ind) => {
-              
               let str = "";
               for (let i = 0; i < it.length; i++) {
                 if (it[i] === ",") {
@@ -2108,7 +2272,7 @@
                 oldArr.push(index + 1);
               }
               if (item === " " && hisArr[index + 1] === " ") {
-                return ''
+                return "";
               }
               return item;
             });
@@ -2120,7 +2284,28 @@
             });
 
             break;
-        }
+          case 5:
+            let ifEnd = false;
+            var sr = document.getElementById("content_right");
+            num1++;
+            newarr = hisArr.map((item, index) => {
+              if (index === end-1) {
+                ifEnd = true;
+              }
+              return item;
+            });
+            if(end === 0){
+              setSelectionRange(sr, end + 2, end + 2);
+              newarr.splice(end, 0, ite);
+            }else{
+              if (ifEnd) {
+                setSelectionRange(sr, end + 2, end + 2);
+                newarr.splice(end, 0, ite);
+                ifEnd = false;
+              }
+            }
+            break;
+          }
         ContentRightValue = newarr.join("");
         rContent.value = ContentRightValue;
         str = "";
@@ -2172,23 +2357,17 @@
       return start;
     };
     // 特殊字符
-    const specialCode = (
-      type,
-      Code,
-      addindex = 0,
-      ifTrue = false
-    ) => {
+    const specialCode = (type, Code, addindex = 0, ifTrue = false) => {
       if (str || Code.length) {
         // 处理内容
-         if (IfOContent) {
+        if (IfOContent) {
           hisArr = ContentValue.split("");
-          start = oContent.selectionStart
-          end = oContent.selectionEnd
-          
+          start = oContent.selectionStart;
+          end = oContent.selectionEnd;
         } else {
           hisArr = ContentFiveValue.split("");
-          start = fContent.selectionStart
-          end = fContent.selectionEnd
+          start = fContent.selectionStart;
+          end = fContent.selectionEnd;
         }
         let newarr;
         let listCode;
@@ -2219,10 +2398,10 @@
           if (start < 0) {
             start = 0;
           }
-        }else if(type===8 && !str.length){
-          start = handleNum(start,end,1,hisArr)
-        }else if(type===12 && !str.length){
-          start = handleNum(start,end,1,hisArr)
+        } else if (type === 8 && !str.length) {
+          start = handleNum(start, end, 1, hisArr);
+        } else if (type === 12 && !str.length) {
+          start = handleNum(start, end, 1, hisArr);
         }
         newarr = hisArr.map((item, index) => {
           if (index >= start && index < end) {
@@ -2328,7 +2507,10 @@
                     for (let i = 1; i < specialCodeList.length; i++) {
                       for (let j = 0; j < i; j++) {
                         if (specialCodeList[i] - specialCodeList[j] === 1) {
-                          specialCodeList.splice(specialCodeList.indexOf(specialCodeList[j]),1);
+                          specialCodeList.splice(
+                            specialCodeList.indexOf(specialCodeList[j]),
+                            1
+                          );
                         }
                       }
                     }
@@ -2336,7 +2518,9 @@
                   } else {
                     concat = specialCodeList.concat(itemlist);
                   }
-                  concat = concat.sort((a, b) => {return a - b;});
+                  concat = concat.sort((a, b) => {
+                    return a - b;
+                  });
                   for (let i = 1; i < concat.length; i++) {
                     for (let j = 0; j < i; j++) {
                       if (concat[i] - concat[j] === 1) {
@@ -2348,12 +2532,24 @@
                     if (isSpecialCode) {
                       // 带特殊符号
                       if (specialCodeList.length === 4) {
-                        newarr.splice(specialCodeList[i + 1] + 2 + 1 * i,0,listCode[i + 1]);
+                        newarr.splice(
+                          specialCodeList[i + 1] + 2 + 1 * i,
+                          0,
+                          listCode[i + 1]
+                        );
                       } else {
-                        newarr.splice(concat[i] + 1 + 1 * i,0,listCode[i + 1]);
+                        newarr.splice(
+                          concat[i] + 1 + 1 * i,
+                          0,
+                          listCode[i + 1]
+                        );
                       }
                     } else {
-                      newarr.splice(itemlist[i] + 1 + 1 * i,0,listCode[i + 1]);
+                      newarr.splice(
+                        itemlist[i] + 1 + 1 * i,
+                        0,
+                        listCode[i + 1]
+                      );
                     }
                     end++;
                   }
@@ -2496,46 +2692,59 @@
               }
               break;
             case 8:
-                  if(itemlist.length ===2){
-                    for (let index = 0; index < itemlist.length - 1; index++) {
-                      newarr.splice(itemlist[index] + 1 + 1 * index,0,listCode[0]);
-                    }
-                  }else{
-                    newarr.splice(itemlist[0] + 1,0,'-')
-                  }
+              if (itemlist.length === 2) {
+                for (let index = 0; index < itemlist.length - 1; index++) {
+                  newarr.splice(
+                    itemlist[index] + 1 + 1 * index,
+                    0,
+                    listCode[0]
+                  );
+                }
+              } else {
+                newarr.splice(itemlist[0] + 1, 0, "-");
+              }
               break;
             case 12:
-              if(itemlist.length > 1){
-                for (let index = 0; index < itemlist.length-1; index++) {
+              if (itemlist.length > 1) {
+                for (let index = 0; index < itemlist.length - 1; index++) {
                   newarr.splice(itemlist[index] + 1 + 1 * index, 0, " - ");
                 }
-              }else{
+              } else {
                 for (let index = 0; index < itemlist.length; index++) {
                   newarr.splice(itemlist[index] + 1 + 1 * index, 0, " - ");
                 }
               }
               break;
             case 9:
-                newarr.splice(end + 1, 0 , ' ');
-                newarr.splice(end + 2, 0 , '-');
-                newarr.splice(end + 3, 0 , ' ');
-                newarr.splice(end + 4, 0 , '|');
-                newarr.splice(end + 5, 0 , '\n');
-                newarr.splice(end + 6, 0 , '\n');
+              newarr.splice(end + 1, 0, " ");
+              newarr.splice(end + 2, 0, "-");
+              newarr.splice(end + 3, 0, " ");
+              newarr.splice(end + 4, 0, "|");
+              newarr.splice(end + 5, 0, "\n");
+              newarr.splice(end + 6, 0, "\n");
               break;
             case 10:
-              for (let index = 0; index < itemlist.length - 1; index++) {
-                newarr.splice(itemlist[index] + 1 + 1 * index, 0, listCode[0]);
-              }
+              newarr.splice(itemlist[0],0,'(')
+              newarr.splice(end + 1,0,')')
+              newarr.splice(end + 2,0,' ')
+              break;
+            case 11:
+              newarr.splice(end + 1, 0, Code);
+              var sr =
+                document.getElementById("content") ||
+                document.getElementById("content_five");
+              setSelectionRange(
+                sr,
+                end + 1 + Code.length,
+                end + 1 + Code.length
+              );
               break;
             case 0:
               let ifEnter = false;
               num1++;
-
               var sr =
                 document.getElementById("content") ||
                 document.getElementById("content_five");
-              setSelectionRange(sr, end + num1, end + num1);
               newarr = hisArr.map((item, index) => {
                 if (index === end - 1 || index === end) {
                   ifEnter = true;
@@ -2558,12 +2767,15 @@
                     }
                   } else {
                     newarr.splice(end, 0, Code[0]);
+                    newarr.splice(end + 1, 0, Code[1]);
                   }
                 } else {
                   newarr.splice(end, 0, Code[0]);
+                  newarr.splice(end + 1, 0, Code[1]);
                 }
               }
               ifEnter = false;
+              setSelectionRange(sr, end + num1 + 1, end + num1 + 1);
               break;
           }
         }
@@ -2640,14 +2852,22 @@
               if (str.length === 3) {
                 enterlist.push(end - 2);
               }
-              if(enterlist.length > 1){
+              if (enterlist.length > 1) {
                 newarr.splice(start, 0, `${itemcode[0]}: `);
                 for (let index = 0; index < itemcode.length - 1; index++) {
-                  newarr.splice(enterlist[index] + 1 * index + 2,0,`${itemcode[index + 1]}: `);
+                  newarr.splice(
+                    enterlist[index] + 1 * index + 2,
+                    0,
+                    `${itemcode[index + 1]}: `
+                  );
                 }
-              }else{
+              } else {
                 for (let index = 0; index < itemcode.length; index++) {
-                  newarr.splice(end + 1 * index + 1,0,`${itemcode[index]}: \n`);
+                  newarr.splice(
+                    end + 1 * index + 1,
+                    0,
+                    `${itemcode[index]}: \n`
+                  );
                 }
               }
             } else {
@@ -2685,20 +2905,20 @@
       let ContentRightValue2 = document.getElementById("content_right").value; //右边
       let ContentFiveValue2 = document.getElementById("content_five").value; //最后
 
-      ContentValue2 = ContentValue2.split("").map((item,index)=>{
+      ContentValue2 = ContentValue2.split("").map((item, index) => {
         if (item === " " && ContentValue2[index + 1] === " ") {
-         return ''
-        }else{
-          return item
+          return "";
+        } else {
+          return item;
         }
-      })
-      ContentRightValue2 = ContentRightValue2.split("").map((item,index)=>{
+      });
+      ContentRightValue2 = ContentRightValue2.split("").map((item, index) => {
         if (item === " " && ContentRightValue2[index + 1] === " ") {
-         return ''
-        }else{
-          return item
+          return "";
+        } else {
+          return item;
         }
-      })
+      });
 
       ContentValue2 = ContentValue2.join("").replace(/\n\n/g, ".");
       ContentRightValue2 = ContentRightValue2.join("").replace(/\n\n/g, ".");
@@ -2724,9 +2944,12 @@
           contentRightarr[index] = contentRightarr[index].replace(/\n/, "");
         }
       });
-     if(contentarr.length > contentRightarr.length || contentarr.length < contentRightarr.length){
-      alert("左右表单内容组数量不对等，禁止合并！")
-     }else if (contentarr.length == contentRightarr.length) {
+      if (
+        contentarr.length > contentRightarr.length ||
+        contentarr.length < contentRightarr.length
+      ) {
+        alert("左右表单内容组数量不对等，禁止合并！");
+      } else if (contentarr.length == contentRightarr.length) {
         //合并
         for (let index = 0; index < contentarr.length; index++) {
           if (contentarr[index] !== "") {
@@ -2737,7 +2960,7 @@
             newArr.push("\n");
           }
         }
-      } 
+      }
       // else {
       //   for (let index = 0; index < contentRightarr.length; index++) {
       //     if (contentRightarr[index] !== "") {
@@ -2765,29 +2988,31 @@
       }
     };
     //冒号左
-    const maohaofanfuzuo = (val) => {
+    const zhijiefuzhi = (val) => {
       if (str || val.length || ifAllOver) {
         // 处理内容
-        var sr 
+        var sr;
         if (IfOContent) {
           hisArr = ContentValue.split("");
-          sr =document.getElementById("content")
-          start = oContent.selectionStart
-          end = oContent.selectionEnd
-          
+          sr = document.getElementById("content");
+          start = oContent.selectionStart;
+          end = oContent.selectionEnd;
         } else {
           hisArr = ContentFiveValue.split("");
           sr = document.getElementById("content_five");
-          start = fContent.selectionStart
-          end = fContent.selectionEnd
+          start = fContent.selectionStart;
+          end = fContent.selectionEnd;
         }
         let ifEnter = false;
         let newarr = [];
         let num1 = val.length;
-        
+
         if (hisArr.length > 0) {
           newarr = hisArr.map((item, index) => {
-            if (index === end ||(index + 1 === hisArr.length && hisArr[index] !== val)) {
+            if (
+              index === end ||
+              (index + 1 === hisArr.length && hisArr[index] !== val)
+            ) {
               ifEnter = true;
             }
             return item;
@@ -2797,7 +3022,7 @@
             newarr.splice(start, end - start, val);
           } else {
             if (ifEnter) {
-              newarr.splice(end , 0, val);
+              newarr.splice(end, 0, val);
               ifEnter = false;
             }
           }
@@ -2857,80 +3082,87 @@
       });
       observerRight.observe(rContent, config);
     };
-  </script>
-  <script>
-    // canvas 画图
-    // var c=document.getElementById("myCanvas");
-    // var ctx=c.getContext("2d");
+
+    // 赋值添加内容
+    const zhuanhuanfuzhi = (type, len) => {
+      // 处理内容
+      hisArr = ContentValue.split("");
+      start = oContent.selectionStart;
+      end = oContent.selectionEnd;
+      let newarr;
+      newarr = hisArr.map((item, index) => {
+        return item;
+      });
+      switch (type) {
+        case 1:
+          newarr.splice(end, 0, ' "1."|0');
+          break;
+        case 2:
+          newarr.splice(end, 0, ' "2.3.4."|0');
+          break;
+      }
+      setSelectionRange(oContent, end + len, end + len);
+      if (num % 2 === 0) {
+        backText = ContentValue;
+      } else {
+        backTextTwo = ContentValue;
+      }
+      num++;
+      ContentValue = newarr.join("");
+      oContent.value = ContentValue;
+      str = "";
+    };
     
-    const { Factory, EasyScore, System } = Vex.Flow;
+    // 进行five模块排序
+    const overSort = (type) => {
+       // 处理内容
+      hisArr = ContentFiveValue.split("");
+      start = fContent.selectionStart;
+      end = fContent.selectionEnd;
+      let newarr = [];
+      let enterSplit = [] //分割列表
+      let specialSplit = [] //]分割列表
+      let indlist = [] //用于收集符合判断的下标
+      let itelist = [] //用于收集符合判断的内容
 
-const vf = new Factory({
-  renderer: { elementId: 'myCanvas', width: '100%', height: '500' },
-});
+      // 处理每个模块，进行切割
+      hisArr.map((item, index) => {
+        specialSplit.push(item)
+        if((item === '\n' && hisArr[index - 1] === '\n' && hisArr[index + 1] !== '\n') || index === hisArr.length-1){
+          enterSplit.push(specialSplit)
+          specialSplit = []
+        }
+        return item;
+      });
+      // 获取到符合条件的下标
+      enterSplit.map((item,index)=>{
+        item.map((ite,ind)=>{
+          if(ite === ']' && item[ind -1] >= 0 && item[ind -3] === ':' && item[ind -4] === 'V' && item[ind -5] === '['){
+           indlist.push(ind)
+          }
+        })
+        itelist.push(indlist)
+        indlist = []
+      })
 
-const score = vf.EasyScore();
-const system = vf.System();
-
-// system
-//   .addStave({
-//     voices: [
-//       score.voice(score.notes('C#5/q, B4, A4, G#4', { stem: 'up' })),
-//       score.voice(score.notes('C#4/h, C#4', { stem: 'down' })),
-//     ],
-//   })
-//   .addClef('treble')
-//   .addTimeSignature('4/4');
-
-
-// ctx.fillText("Hello World",10,50);
-// Create an SVG renderer and attach it to the DIV element named "boo".
-// const { Renderer, Stave } = Vex.Flow;
-
-// // Create an SVG renderer and attach it to the DIV element with id="output".
-// const div = document.getElementById('myCanvas');
-// const renderer = new Renderer(div, Renderer.Backends.SVG);
-
-// // Configure the rendering context.
-// renderer.resize(500, 500);
-// const context = renderer.getContext();
-// context.setFont('Arial', 10);
-// // var vf = new Vex.Flow.Factory({renderer: {elementId: 'myCanvas', width: 500, height: 200}});
-// const stave = new Stave(10, 40, 400);
-// // Add a clef and time signature.
-// stave.addClef('treble').addTimeSignature('4/4');
-
-// // Connect it to the rendering context and draw!
-// stave.setContext(context).draw();
-
-// var score = vf.EasyScore();
-// var system = vf.System();
-system.addStave({
-  voices: [
-    score.voice(score.notes('C#5/q, B4, A4, G#4', {stem: 'up'})),
-    score.voice(score.notes('C#4/h, C#4', {stem: 'down'}))
-  ]
-}).addClef('treble').addTimeSignature('4/4');
-
-system.addStave({
-  voices: [
-    score.voice(score.notes('C#3/q, B2, A2/8, B2, C#3, D3', {clef: 'bass', stem: 'up'})),
-    score.voice(score.notes('C#2/h, C#2', {clef: 'bass', stem: 'down'}))
-  ]
-}).addClef('bass').addTimeSignature('4/4');
-
-// system.addConnector()
-    // font - 定义字体
-// fillText(text,x,y) - 在 canvas 上绘制实心的文本
-// strokeText(text,x,y) - 在 canvas 上绘制空心的文本
-    // 创建渐变
-// var grd=ctx.createRadialGradient(75,50,5,90,60,100);
-// grd.addColorStop(0,"red");
-// grd.addColorStop(1,"white");
-vf.draw();
- 
-// 填充渐变
-// ctx.fillStyle=grd;
-// ctx.fillRect(10,10,150,80);
+      // 利用下标进行添加内容
+      enterSplit.map((item,index)=>{
+        item.splice(itelist[index][0]+1,0,' %' + (index +type))
+        newarr.push.apply(newarr,item)
+      })
+      ContentFiveValue = newarr.join("");
+      fContent.value = ContentFiveValue;
+      str = "";
+    }
+    
+    // 打开遮罩层
+    const clickMock = (type) => {
+      const mock = document.getElementById('mock')
+      if(type){
+        mock.style.display = 'block'
+      }else{
+        mock.style.display = 'none'
+      }
+    }
   </script>
 </html>
