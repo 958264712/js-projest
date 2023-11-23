@@ -613,6 +613,7 @@
         height: auto;
         overflow: hidden;
         margin: 0 0 0 4px;
+            position: relative;
       }
 
       .lay-five textarea {
@@ -625,13 +626,12 @@
       }
 /* 遮罩层 */
       .lay-five #mask {
-        width: 100%;
-        height: 100%;
+        /* width: 100%;
+        height: 100%; */
         max-width: 762px;
         max-height: 680px;
         position: absolute;
-        top: 4px;
-        right: 4px;
+        top: 0px;
         z-index: 99;
         background-color: #4f5157;
         opacity: 0.7;
@@ -3139,9 +3139,9 @@
           break;
       }
       if(!str.length){
-        setSelectionRange(oContent, end + len -1, end + len-1);
+        setSelectionRange(oContent, end + len , end + len);
       }else{
-        setSelectionRange(oContent, start + len -1, start + len -1);
+        setSelectionRange(oContent, start + len, start + len );
       }
       if (num % 2 === 0) {
         backText = ContentValue;
@@ -3196,6 +3196,8 @@
     // 打开遮罩层
     const clickMask = (type) => {
       const mask = document.getElementById('mask')
+      mask.style.width = getComputedStyle(fContent).getPropertyValue("width");
+      mask.style.height = getComputedStyle(fContent).getPropertyValue("height");
       if(type){
         mask.style.display = 'block'
       }else{
