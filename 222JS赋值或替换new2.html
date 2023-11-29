@@ -2018,9 +2018,6 @@
               if (index === end || index + 1 === end) {
                 ifEnter = true;
               }
-              if (item === " " && hisArr[index + 1] === " ") {
-                return "";
-              }
               return item;
             });
             if (str.length) {
@@ -2034,6 +2031,32 @@
                 ifEnter = false;
               }
             }
+            let enNum = 0;
+            let ifAf = false;
+            newarr = newarr.map((item, index) => {
+              if (
+                end === index &&
+                newarr[end - 1] !== " " &&
+                newarr[end] === " "
+              ) {
+                ifAf = true;
+              }
+              if (item === " " && newarr[index + 1] === " ") {
+                enNum++;
+                return "";
+              }
+              if (ifAf) {
+                if (item === " " && newarr[index - 1] === " ") {
+                  enNum++;
+                  return "";
+                }
+              }
+              return item;
+            });
+            if (ifAf) {
+              enNum = 0;
+            }
+            setSelectionRange(oContent, end + 3 - enNum, end + 3 - enNum);
             break;
           case "delete":
             let ifDelete = false;
@@ -2876,17 +2899,36 @@
               }
               newarr = newarr.join("").split("");
               let enterNum = 0;
+              let ifAfter = false;
               newarr = newarr.map((item, index) => {
+                if (
+                  end === index &&
+                  newarr[end - 1] !== " " &&
+                  newarr[end] === " "
+                ) {
+                  ifAfter = true;
+                }
                 if (item === " " && newarr[index + 1] === " ") {
                   enterNum++;
                   return "";
                 }
                 return item;
               });
+              if (ifAfter) {
+                enterNum = 0;
+              }
               if (itemlist.length > 1 && str.length) {
-                setSelectionRange(oContent, end + sum - enterNum, end + sum - enterNum);
-              }else{
-                setSelectionRange(oContent, end + 3 - enterNum, end + 3 - enterNum);
+                setSelectionRange(
+                  oContent,
+                  end + sum - enterNum,
+                  end + sum - enterNum
+                );
+              } else {
+                setSelectionRange(
+                  oContent,
+                  end + 3 - enterNum,
+                  end + 3 - enterNum
+                );
               }
               break;
             case 9:
@@ -2898,13 +2940,30 @@
               newarr.splice(end + 5, 0, "\n");
               newarr = newarr.join("").split("");
               let enNum = 0;
+              let ifAf = false;
               newarr = newarr.map((item, index) => {
+                if (
+                  end === index &&
+                  newarr[end - 1] !== " " &&
+                  newarr[end] === " "
+                ) {
+                  ifAf = true;
+                }
                 if (item === " " && newarr[index + 1] === " ") {
                   enNum++;
                   return "";
                 }
+                if (ifAf) {
+                  if (item === " " && newarr[index - 1] === " ") {
+                    enNum++;
+                    return "";
+                  }
+                }
                 return item;
               });
+              if (ifAf) {
+                enNum = 0;
+              }
               setSelectionRange(oContent, end + 5 - enNum, end + 5 - enNum);
               break;
             case 10:
