@@ -1104,7 +1104,7 @@
           </li>
           <li>
             <i>?</i
-            ><label class="paineiduolianxian" onclick="specialCode(10,`() `)">
+            ><label class="paineiduolianxian" onclick="specialCode(10,`()`)">
             </label>
           </li>
           <li>
@@ -1929,6 +1929,13 @@
           backText = ContentValue;
         } else {
           backTextTwo = ContentValue;
+        }
+        let sortNewarr = newarr.length-1
+        for (let i = newarr.length-1; i >=0; i--) {
+          if(newarr[newarr.length-1] === '\n' && newarr[i] === '\n' && i === sortNewarr){
+            sortNewarr--
+            newarr.pop()
+          }
         }
         num++;
         ContentValue = newarr.join("");
@@ -2969,7 +2976,7 @@
             case 10:
               newarr.splice(itemlist[0], 0, "(");
               newarr.splice(end + 1, 0, ")");
-              newarr.splice(end + 2, 0, " ");
+              // newarr.splice(end + 2, 0, " ");
               break;
             case 11:
               newarr.splice(end + 1, 0, Code);
@@ -3332,9 +3339,17 @@
     // 赋值添加内容
     const zhuanhuanfuzhi = (type, len) => {
       // 处理内容
-      hisArr = ContentValue.split("");
-      start = oContent.selectionStart;
-      end = oContent.selectionEnd;
+      if (IfOContent) {
+        hisArr = ContentValue.split("");
+        sr = document.getElementById("content");
+        start = oContent.selectionStart;
+        end = oContent.selectionEnd;
+      } else {
+        hisArr = ContentFiveValue.split("");
+        sr = document.getElementById("content_five");
+        start = fContent.selectionStart;
+        end = fContent.selectionEnd;
+      }
       let newarr;
       newarr = hisArr.map((item, index) => {
         return item;
@@ -3366,8 +3381,13 @@
         backTextTwo = ContentValue;
       }
       num++;
-      ContentValue = newarr.join("");
-      oContent.value = ContentValue;
+      if (IfOContent) {
+        ContentValue = newarr.join("");
+        oContent.value = ContentValue;
+      } else {
+        ContentFiveValue = newarr.join("");
+        fContent.value = ContentFiveValue;
+      }
       str = "";
     };
 
@@ -3387,9 +3407,12 @@
         if (
           item === "\n" &&
           hisArr[index - 1] === "]" &&
-          hisArr[index + 1] === '"'
+          (hisArr[index + 1] === '"'||hisArr[index + 1] === '\n')
         ) {
           enterSplit.push(index);
+          if(hisArr[index + 1] === '\n'){
+            return hisArr.splice(index+1,1)
+          }
         }
         if (
           item >= 0 &&
@@ -3408,23 +3431,63 @@
       newarr = hisArr.map((item, index) => {
         if (enterSplit.includes(index)) {
           i += 1;
-          return " %" + (i + +type) + "\n";
+          if(hisArr[index+1]==='\n'){
+            return " %" + (i + +type) ;
+          }else{
+            return " %" + (i + +type) + "\n";
+          }
         } else {
-          if (
+          if(item === "\n"&&
+            hisArr[index - 1] === "\n" &&
+            hisArr[index - 2] >=  0 &&
+            hisArr[index - 3] === "]" &&
+            hisArr[index - 4] >=  0 &&
+            hisArr[index - 6] === ':' &&
+            hisArr[index - 7] === 'V' ){
+            // console.log(hisArr[index-1],hisArr[index-2],hisArr[index-3],hisArr[index-4],hisArr[index-5],hisArr[index-6],item);
+            return "";
+          }else if (
             item === "\n" &&
-            hisArr[index - 2] === "]" &&
-            hisArr[index - 1] >= 0 &&
-            hisArr[index - 6] === "V" &&
-            hisArr[index - 5] === ":" &&
-            hisArr[index + 1] === '"'
+             hisArr[index - 1] === "\n" &&
+             hisArr[index - 2] === "\n" &&
+            hisArr[index - 3] >=  0 &&
+            hisArr[index - 4] === "]" &&
+            hisArr[index - 5] >=  0 &&
+            hisArr[index - 7] === ':' &&
+            hisArr[index - 8] === 'V'
           ) {
             return "";
-          } else {
+          } else if (
+            item === "\n" &&
+             hisArr[index - 1] === "\n" &&
+             hisArr[index - 2] === "\n" &&
+             hisArr[index - 3] === "\n" &&
+            hisArr[index - 4] >=  0 &&
+            hisArr[index - 5] === "]" &&
+            hisArr[index - 6] >=  0 &&
+            hisArr[index - 8] === ':' &&
+            hisArr[index - 9] === 'V'
+          ) {
+            return "";
+          }else if (
+            item === "\n" &&
+             hisArr[index - 1] === "\n" &&
+             hisArr[index - 2] === "\n" &&
+             hisArr[index - 3] === "\n" &&
+             hisArr[index - 4] === "\n" &&
+            hisArr[index - 5] >=  0 &&
+            hisArr[index - 6] === "]" &&
+            hisArr[index - 7] >=  0 &&
+            hisArr[index - 9] === ':' &&
+            hisArr[index - 10] === 'V'
+          ) {
+            return "";
+          }else {
             return item;
           }
         }
       });
-      console.log(newarr);
+      // console.log(newarr);
 
       ContentFiveValue = newarr.join("");
       fContent.value = ContentFiveValue;
