@@ -1,0 +1,23 @@
+I: 
+%I: 选用C调指法编配，Capo:0-4品(男声调C-E)，5-7品(女声调F-G)
+%I: 选用C调指法编配，Capo:4-5品(女声调E-F)，0品(男声调C)
+%I: 选用C调指法编配，Capo:4-5品(男声调B-C)
+%I: 选用C调指法编配，Capo:0-2品(女声调G-A) 
+
+T: XXX
+T: [初级弹唱 简易版]
+
+C: [原唱：XXX   ]
+C: [作词：XXX   ]
+C: [作曲：XXX   ]
+C: [制谱：二  少]
+
+Q: 1/4=00
+M: 4/4 
+L: 1/4
+K: C
+
+V:1 style=tab clef=standardtab ins=24 vol=100 bracket=2
+V:2 style=jianpu ins=1 vol=100
+% V:3 style=jianpu ins=1 vol=100
+备注说明：这一行是空行，赋值或覆盖的时候要带一个空行在这里。
