@@ -2538,16 +2538,24 @@
         }
         let newarr;
         let num1 = 0;
+        let reg = /[\u4e00-\u9fa5]/
+        let reg1 = /[，。,.!?？！、]/
+        let reg2 = /[A-Za-z]/
+        let reg3 = /[\-\·]/
         switch (type) {
           case 1:
             newarr = hisArr.map((item, index) => {
               if (index >= start && index < end) {
                 if (item === "\n") {
                   item = "";
-                } else if (item === " " && hisArr[index - 1] >= 0) {
+                } else if ((item === " " || reg1.test(item)) && (hisArr[index - 1] >= 0 || reg.test(hisArr[index - 1]))) {
                   item = "";
-                } else {
-                  return item;
+                }
+                else{
+                  if(((item != " " && !reg3.test(item)  && !reg2.test(hisArr[index-1]) && !reg1.test(item))|| reg1.test(item) )&& reg2.test(hisArr[index-1])){
+                    return '';
+                  }
+                  return item
                 }
               }
               return item;
@@ -2755,14 +2763,19 @@
             }
         }
 
+        if (num % 2 === 0) {
+          if (IfRContent) {
+            backTextRight = ContentRightValue;
+          }else{
+            backTextFive = ContentFiveValue;
+          }
+        }
         if (IfRContent) {
           ContentRightValue = newarr.join("");
           rContent.value = ContentRightValue;
-          backTextRight = ContentRightValue;
         } else {
           ContentFiveValue = newarr.join("");
           fContent.value = ContentFiveValue;
-          backTextFive = ContentFiveValue;
         }
 
         str = "";
@@ -3458,11 +3471,11 @@
               // newarr.splice(end + 2, 0, " ");
               break;
             case 11:
-              newarr.splice(end + 1, 0, Code);
+              newarr.splice(end, 0, Code);
               setSelectionRange(
                 sr,
-                end + 1 + Code.length,
-                end + 1 + Code.length
+                end + Code.length,
+                end + Code.length
               );
               break;
             case 0:
