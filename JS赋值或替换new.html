@@ -3838,7 +3838,7 @@
         hisArr[index - 1] === "]" &&
         hisArr[index - 2] >= 0 &&
         hisArr[index - 5] === "V" &&
-        (hisArr[index + 1] === '"' || hisArr[index + 1] === "\n" || (hisArr[index + 1] === "|" &&  hisArr[index + 2] === ":"))
+        (hisArr[index + 1] === '"' || hisArr[index + 1] === "\n" || (hisArr[index + 1] === "|" &&  hisArr[index + 2] === ":" && hisArr[index-8] === '\n' && hisArr[index-7] === '\n'))
       ) {
         enterSplit.push(index);
         if (hisArr[index + 1] === "\n") {
